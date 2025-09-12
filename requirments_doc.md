@@ -1,4 +1,4 @@
-Project: My spy place  for spys only
+Project: My spy place for spys only
 
 Business Context 
 
@@ -60,7 +60,7 @@ Be able to search for people by their roles, have as a filter?
  
 Direct messages:  
 
-Make page that can have a direct message 
+Make page that can have an ecrypted direct message with other users.
 
 
 Home/ media page:  
