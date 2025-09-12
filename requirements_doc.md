@@ -1,8 +1,8 @@
-Project: My spy place  
+Project: My spy place  for spys only
 
 Business Context 
 
-Spies need to connect to claim contracts, receive support from other spies, and share information amongst themselves. Spies need to hide their real identity, but still have a user that other spies can recognize and connect with. 
+Spies need to have the ability to connect to claim contracts, receive support from other spies, and share information amongst themselves. Spies need to hide their real identity, but still have a user that other spies can recognize and connect with. 
 
  
 Problem Statement-  
