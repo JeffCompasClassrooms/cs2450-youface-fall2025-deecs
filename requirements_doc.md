@@ -2,7 +2,7 @@ Project: My Spy Place
 
 Business Context 
 
-Spies need to connect to claim contracts, receive support from other spies, and share information amongst themselves. Spies need to hide their real identity, but still have a user that other spies can recognize and connect with. 
+Spies need to have the ability to connect to claim contracts, receive support from other spies, and share information amongst themselves. Spies need to hide their real identity, but still have a user that other spies can recognize and connect with. 
 
  
 Problem Statement-  
@@ -98,7 +98,5 @@ Our website will be available for spies with up to 99.99% uptime.
 The website will run on up to date and secure browsers. 
 
 Login processing should take less than 3 seconds. 
-
-
 
  
