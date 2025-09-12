@@ -1,4 +1,4 @@
-Project: My spy place  
+Project: My Spy Place 
 
 Business Context 
 
@@ -98,5 +98,7 @@ Our website will be available for spies with up to 99.99% uptime.
 The website will run on up to date and secure browsers. 
 
 Login processing should take less than 3 seconds. 
+
+
 
  
