@@ -17,7 +17,7 @@ Scope-
 
 In Scope: This Webpage will integrate with the existing social media foundation. An ideal environment will be created for spies to connect with each other and find contracts. 
 
-Out of scope for first version: We will not be using geolocation for features on this version. A shop is also out of scope for this version. These features may be expanded upon in future versions. 
+In Scope After Framework: For our first version, the following features are out of scope, but can be added later. Encryption for direct messages (asymmetric) and posts (symmetric and asymmetric), geolocation for contract features, and a shop for spy gadgets. 
 
 Out of scope: Algorithm to automatically suggest potential team members. 
 
