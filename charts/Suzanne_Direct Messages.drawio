@@ -1,0 +1,110 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" version="28.2.4">
+  <diagram name="Page-1" id="hY9xLeSpzUcuCWc9kO1Z">
+    <mxGraphModel dx="1523" dy="923" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="390" y="190" as="targetPoint" />
+            <mxPoint x="390" y="140" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zuulRit-BL2ZRUIo2NJ3-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="630" y="675" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="zuulRit-BL2ZRUIo2NJ3-2" target="zuulRit-BL2ZRUIo2NJ3-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-2" value="Has Messages?&lt;div&gt;(notification has value)&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="317.5" y="270" width="145" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-9" value="No" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="470" y="325" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-11" value="Start" style="ellipse;whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="100" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-14" value="Direct Messages" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="50" y="20" width="190" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zuulRit-BL2ZRUIo2NJ3-15" target="zuulRit-BL2ZRUIo2NJ3-18">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="390" y="565" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-15" value="Select/interact with specific message" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="455" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zuulRit-BL2ZRUIo2NJ3-18" target="zuulRit-BL2ZRUIo2NJ3-21">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="390" y="685" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-18" value="Reply?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="555" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zuulRit-BL2ZRUIo2NJ3-21">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="390" y="775" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-21" value="Submit new message" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="675" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-24" value="No" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="300" y="570" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-25" value="Yes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="350" y="643" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-27" value="End" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="350" y="775" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="zuulRit-BL2ZRUIo2NJ3-28" target="zuulRit-BL2ZRUIo2NJ3-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-28" value="Direct Message page" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="190" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-10" value="Yes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="340" y="425" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zuulRit-BL2ZRUIo2NJ3-33">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="710" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-33" value="Compose message?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="570" y="675" width="120" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-35" value="Yes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="520" y="700" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-38" value="No" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="590" y="800" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-40" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="630" y="790" as="sourcePoint" />
+            <mxPoint x="440" y="820" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="630" y="820" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zuulRit-BL2ZRUIo2NJ3-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="zuulRit-BL2ZRUIo2NJ3-18">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="820" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="260" y="595" />
+              <mxPoint x="260" y="820" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
