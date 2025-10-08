@@ -3,14 +3,22 @@ import tinydb
 def new_user(db, username, password):
     users = db.table('users')
     User = tinydb.Query()
+    #status_code = 1 #Change status code based off of specific error
     if users.get(User.username == username):
+        print("User already logged in")
+        return None
+    if username.strip() == "":
+        print("Empty username")
+        return None
+    if password.strip() == "": #Increase requirements in production
+        print()
         return None
     user_record = {
             'username': username,
             'password': password,
             'friends': []
             }
-    return users.insert(user_record)
+    return users.insert(user_record)#, 1
 
 def get_user(db, username, password):
     users = db.table('users')
