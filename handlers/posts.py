@@ -4,7 +4,9 @@ from db import posts, users, helpers
 
 blueprint = flask.Blueprint("posts", __name__)
 
-@blueprint.route('/post', methods=['POST'])
+//user = users.getuser()
+
+@blueprint.route(f'/${user}post', methods=['POST'])
 def post():
     """Creates a new post."""
     db = helpers.load_db()
