@@ -91,3 +91,90 @@ def index():
     return flask.render_template('feed.html', title=copy.title,
             subtitle=copy.subtitle, user=user, username=username,
             friends=friends, posts=sorted_posts)
+
+@blueprint.route('/assignments')
+def assignments():
+    """Render the Assignments page (requires login)."""
+    db = helpers.load_db()
+
+    username = flask.request.cookies.get('username')
+    password = flask.request.cookies.get('password')
+
+    user = users.get_user(db, username, password)
+    if not user:
+        flask.flash('You must be logged in to view Assignments.', 'danger')
+        return flask.redirect(flask.url_for('login.loginscreen'))
+
+    return flask.render_template(
+        'assignments.html',
+        title=copy.title,
+        subtitle=copy.subtitle,
+        user=user,
+        username=username,
+    )
+
+@blueprint.route('/secure')
+def secure():
+    """Render the Secure Channel page (requires login)."""
+    db = helpers.load_db()
+
+    username = flask.request.cookies.get('username')
+    password = flask.request.cookies.get('password')
+
+    user = users.get_user(db, username, password)
+    if not user:
+        flask.flash('You must be logged in to view Secure Channel.', 'danger')
+        return flask.redirect(flask.url_for('login.loginscreen'))
+
+    return flask.render_template(
+        'secure.html',
+        title=copy.title,
+        subtitle=copy.subtitle,
+        user=user,
+        username=username,
+    )
+
+@blueprint.route('/profile')
+def profile():
+    """Render the User Profile page for the logged-in user (requires login)."""
+    db = helpers.load_db()
+
+    username = flask.request.cookies.get('username')
+    password = flask.request.cookies.get('password')
+
+    user = users.get_user(db, username, password)
+    if not user:
+        flask.flash('You must be logged in to view your profile.', 'danger')
+        return flask.redirect(flask.url_for('login.loginscreen'))
+
+    return flask.render_template(
+        'profile.html',
+        title=copy.title,
+        subtitle=copy.subtitle,
+        user=user,
+        username=username,
+    )
+
+@blueprint.route('/search')
+def search():
+    """Render the Search page with blank results (no logic yet)."""
+    db = helpers.load_db()
+
+    username = flask.request.cookies.get('username')
+    password = flask.request.cookies.get('password')
+
+    user = users.get_user(db, username, password)
+    if not user:
+        flask.flash('You must be logged in to search.', 'danger')
+        return flask.redirect(flask.url_for('login.loginscreen'))
+
+    q = (flask.request.args.get('q') or '').strip()
+
+    return flask.render_template(
+        'search.html',
+        title=copy.title,
+        subtitle=copy.subtitle,
+        user=user,
+        username=username,
+        q=q,
+    )

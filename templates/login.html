@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row">
+
+<div class="row login-row">
   <div class="col-sm-6 mx-auto">
-    <div class="card card-body bg-light">
+    <img src="{{ url_for('static', filename='myspylogo.jpg') }}" alt="Team Logo" class="login-logo">
+    <div class="card card-body bg-light login-card">
       <form method="post" action="/login">
         <fieldset>
           <legend>Login</legend>
