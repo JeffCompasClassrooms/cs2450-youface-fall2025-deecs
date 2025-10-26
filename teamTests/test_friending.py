@@ -6,11 +6,9 @@ import time
 import json
 
 options = Options()
-#options.add_argument("--headless")
+options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
-#options.add_argument('--disable-gpu')  # Disable GPU hardware acceleration
-options.add_argument('--disable-software-rasterizer')
 options.add_argument('--remote-debugging-port=9222')
 
 # Don't specify chromedriver path!
@@ -63,7 +61,8 @@ try:
     driver.set_window_size(1200, 800)
     driver.get("http://localhost:5005/loginscreen")
     time.sleep(1)
-
+    total_tests = 0
+    successful_tests = 0
     print("--= Beginning Tests - Dayne Wyler =--")
 
     login("John", "Doe")
@@ -77,57 +76,75 @@ try:
     add_friend_button.click()
     time.sleep(1)
     
+    total_tests += 1
     if add_friend_input_form:
         print("[PASSED] - Add Friend Form is in place.") 
+        successful_tests += 1
     else:
         print("[FAILED] - Add Friend From is not in place.")
 
+
+    total_tests += 1
     if add_friend_input_form_name == "Add Friend":
         print("[PASSED] - Add Friend Form Name is Correct.")
+        successful_tests += 1
     else:
         print("[FAILED] - Add Friend Form Name has been changed to ." + add_friend_input_form_name)
 
+    total_tests += 1
     if add_friend_button:
         print("[PASSED] - Friend Button Exists.")
+        successful_tests += 1
     else:
         print("[FAILED] - Friend button not found.")
 
+    total_tests += 1
     try:
         add_friend("nunshuch")
         add_failure_banner = driver.find_element(By.CSS_SELECTOR, "div.alert-danger")
         print("[PASSED] - Could Not Add Non-existent User as Friend")
+        successful_tests += 1
     except Exception as e:
         print("[FAILED] - Added Non-existent User as Friend")
 
     logout()
     login("Jane", "Doe")
 
+    total_tests += 1
     try:
         add_friend("John")
         friend_success_banner = driver.find_element(By.CSS_SELECTOR, "div.alert-success")
         print("[PASSED] - Friend Action Worked.")
+        successful_tests += 1
     except Exception as e:
         print("[FAILED] - Friend Action did not succeed")
 
+    total_tests += 1
     try:
         add_friend("John")
         friend_failure_banner = driver.find_element(By.CSS_SELECTOR, "div.alert-warning")
         print("[PASSED] - Did not add user already in friends list")
+        successful_tests += 1
     except Exception as e:
         print("[FAILED] - Successfully added user already in friends list")
 
+    total_tests += 1
     try:
         friends_list = driver.find_element(By.CSS_SELECTOR, "div.card-body ul")
         print("[PASSED] - Friends List Exists")
+        successful_tests += 1
     except Exception as e:
         print("[FAILED] - Friends List Does Not Exist")
 
+    total_tests += 1
     try:
         added_friend = driver.find_element(By.CSS_SELECTOR, "div.col-lg-3 a[href='/friend/John']")
         print("[PASSED] - Friend John was Found in Friends List")
+        successful_tests += 1
     except Exception as e:
         print("[FAILED] - Friend John was Not Found in Friends List")
 
+    total_tests += 1
     try:
         add_friend_input = driver.find_element(By.CSS_SELECTOR, "input[placeholder='username']")
         add_friend_input.send_keys("Doe")
@@ -136,15 +153,18 @@ try:
         time.sleep(1)
         friend_failure_banner = driver.find_element(By.CSS_SELECTOR, "div.alert-danger")
         print("[PASSED] - Using Password Did Not Add Friend")
+        successful_tests += 1
     except Exception as e:
         print("[FAILURE] - Using Friend Password Successfully Added Friend")
 
+    total_tests += 1
     try:
         friend_link = driver.find_element(By.CSS_SELECTOR, "div.col-lg-3 a[href='/friend/John']")
         friend_link.click()
         time.sleep(1)
         posts = driver.find_element(By.CSS_SELECTOR, "div.col-lg-8 h2").text
         print("[PASSED] - Friend Hyperlink Functioned Correctly")
+        successful_tests += 1
     except Exception as e:
         print("[FAILED] - Friend Hyperlink Did not Function Correctly") 
 
@@ -152,6 +172,7 @@ except Exception as e:
     print("Error:", e)
 
 finally:
+    print(str(total_tests) + " Tests Ran: " + str(successful_tests) + " Tests Succeeded")
     print("--= Ending Tests =--")
     driver.quit()
 
