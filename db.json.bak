@@ -1,0 +1,18 @@
+{
+    "_default": {},
+    "posts": {},
+    "users": {
+        "1": {
+            "friends": [
+                "john"
+            ],
+            "password": "Doe",
+            "username": "John"
+        },
+        "2": {
+            "friends": [],
+            "password": "doe",
+            "username": "john"
+        }
+    }
+}
