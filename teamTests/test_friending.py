@@ -13,10 +13,8 @@ options.add_argument('--remote-debugging-port=9222')
 
 # Don't specify chromedriver path!
 # Dayne - Selenium Manager doesn't seem to be packaged for ubuntu
-service = Service('/home/Dayne/bin/chromedriver')
-#service = Service()
+service = Service('./chromedriver')
 driver = webdriver.Chrome(options=options, service=service)
-#driver = webdriver.Chrome(options=options)
 
 def reset_db():
     empty_db = {"_default" : {}, "posts" : {}, "users" : {}}
