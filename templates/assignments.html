@@ -4,5 +4,28 @@
 <div class="row mb-4">
   <h1>Available Directives</h1>
 </div>
-{% endblock %}
 
+<div class="row row-left">
+    <div class="col col-lg-8 align-with-heading">
+        {% for contract in contracts %}
+        <div class="card bg-light">
+          <div class="card-body">
+            <h4 class="card-title">{{ contract.title }}</h4>
+            <h6 class="card-subtitle mb-2 text-muted">Posted by: {{ contract.profile.username }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Pay: ${{ "%.2f"|format(contract.pay_amount) }}</h6>
+            <p class="card-text">{{ contract.description }}</p>
+            {% if contract.tags %}
+                <p class="card-text">
+                    <strong>Required Skills:</strong>
+                    {{ contract.tags|join(', ') }}
+                </p>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+        {% if not contracts %}
+        <p>...no directives available...</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 import tinydb
 
-from db import helpers
+from db import client
 
 YOUFACE_URL = "http://localhost:5000"
 
@@ -30,7 +30,7 @@ class TestLoginPage(unittest.TestCase):
         self.patcher.start()
 
         # Grab the database
-        self.db = helpers.load_db()
+        self.db = client.load_db()
         self.username = "username"
 
         create_test_user(self.db, self.username, self.username)

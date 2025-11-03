@@ -10,7 +10,7 @@
     <div class="card bg-light mb-3">
       <div class="card-body">
         <h3 class="card-title">Update</h3>
-        <form method="post" action="/post">
+        <form method="post" action="{{ url_for('posts.post') }}">
           <div class="form-group">
             <textarea class="form-control" name="post" rows="3" placeholder="> Enter intel..."></textarea>
           </div>
@@ -30,9 +30,9 @@
     {% for post in posts %}
     <div class="card bg-light">
       <div class="card-body">
-        <h4 class="card-title">{{ post.user }}</h4>
-        <h6 class="card-subtitle mb-2 text-muted">{{ post.time|convert_time }}</h6>
-        <p class="card-text">{{ post.text }}</p>
+        <h4 class="card-title">{{ post.profile.username }}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">{{ post.created_at|convert_time }}</h6>
+        <p class="card-text">{{ post.content }}</p>
       </div>
     </div>
     {% endfor %}
@@ -44,7 +44,7 @@
     <div class="card bg-light mb-3 panel-gray">
       <div class="card-body">
         <h3 class="card-title">Add Agent</h3>
-        <form method="post" action="/addfriend">
+        <form method="post" action="{{ url_for('friends.addfriend') }}">
           <div class="form-group mb-1">
             <input type="text" class="form-control" name="name" placeholder="username" />
           </div>
@@ -59,7 +59,7 @@
         {% if friends %}
           <ul>
             {% for friend in friends %}
-              <li><a href="/friend/{{ friend.username }}">{{ friend.username }}</a></li>
+              <li><a href="{{ url_for('friends.view_friend', username=friend.username) }}">{{ friend.username }}</a></li>
             {% endfor %}
           </ul>
         {% else %}

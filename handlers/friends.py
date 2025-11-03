@@ -1,70 +1,45 @@
 import flask
-
-from handlers import copy
-from db import posts, users, helpers
+from handlers.auth import login_required
+from db import users as users_db
 
 blueprint = flask.Blueprint("friends", __name__)
 
-@blueprint.route('/addfriend', methods=['POST'])
+@blueprint.route("/addfriend", methods=["POST"])
+@login_required
 def addfriend():
-    """Adds a friend to the user's friends list."""
-    db = helpers.load_db()
+    user_id = flask.g.user['id']
+    friend_username = flask.request.form.get("friend_username")
 
-    # make sure the user is logged in
-    username = flask.request.cookies.get('username')
-    password = flask.request.cookies.get('password')
+    if not friend_username:
+        flask.flash("Username cannot be empty.", "danger")
+        return flask.redirect(flask.url_for('core.index'))
 
-    if username is None and password is None:
-        return flask.redirect(flask.url_for('login.loginscreen'))
+    friend_profile = users_db.get_profile_by_username(friend_username)
+    
+    if not friend_profile:
+        flask.flash(f"Agent '{friend_username}' not found.", "danger")
+        return flask.redirect(flask.url_for('core.index'))
 
-    user = users.get_user(db, username, password)
-    if not user:
-        flash('You need to be logged in to do that.', 'danger')
-        return flask.redirect(flask.url_for('login.loginscreen'))
+    if friend_profile['id'] == user_id:
+        flask.flash("You cannot add yourself as a connection.", "warning")
+        return flask.redirect(flask.url_for('core.index'))
 
-    # add the friend
-    name = flask.request.form.get('name')
-    msg, category = users.add_user_friend(db, user, name)
+    success, message, category = users_db.add_friend(user_id, friend_profile['id'])
+    
+    flask.flash(message, category)
+    return flask.redirect(flask.url_for("core.index"))
 
-    flask.flash(msg, category)
-    return flask.redirect(flask.url_for('login.index'))
-
-@blueprint.route('/unfriend', methods=['POST'])
+@blueprint.route("/unfriend", methods=["POST"])
+@login_required
 def unfriend():
-    """Removes a user from the user's friends list."""
-    db = helpers.load_db()
+    user_id = flask.g.user['id']
+    friend_id = flask.request.form.get("friend_id")
 
-    username = flask.request.cookies.get('username')
-    password = flask.request.cookies.get('password')
+    if not friend_id:
+        flask.flash("Invalid request.", "danger")
+        return flask.redirect(flask.url_for('core.index'))
 
-    user = users.get_user(db, username, password)
-    if not user:
-        flask.flash('You need to be logged in to do that.', 'danger')
-        return flask.redirect(flask.url_for('login.loginscreen'))
+    success, message, category = users_db.remove_friend(user_id, friend_id)
 
-    name = flask.request.form.get('name')
-    msg, category = users.remove_user_friend(db, user, name)
-
-    flask.flash(msg, category)
-    return flask.redirect(flask.url_for('login.index'))
-
-@blueprint.route('/friend/<fname>')
-def view_friend(fname):
-    """View the page of a given friend."""
-    db = helpers.load_db()
-
-    username = flask.request.cookies.get('username')
-    password = flask.request.cookies.get('password')
-
-    user = users.get_user(db, username, password)
-    if not user:
-        flask.flash('You must be logged in to do that.', 'danger')
-        return flask.redirect(flask.url_for('login.loginscreen'))
-
-    friend = users.get_user_by_name(db, fname)
-    all_posts = posts.get_posts(db, friend)[::-1] # reverse order
-
-    return flask.render_template('friend.html', title=copy.title,
-            subtitle=copy.subtitle, user=user, username=username,
-            friend=friend['username'],
-            friends=users.get_user_friends(db, user), posts=all_posts)
+    flask.flash(message, category)
+    return flask.redirect(flask.url_for("core.index"))
