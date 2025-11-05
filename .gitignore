@@ -4,3 +4,4 @@ ilibasound2_1.2.8-1+b1_amd64.deb
 .venv
 .DS_Store
 *.Identifier
+*.env
