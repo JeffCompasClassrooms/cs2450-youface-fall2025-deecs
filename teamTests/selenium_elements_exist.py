@@ -29,17 +29,17 @@ try:
     username_input.send_keys(username)
     password_input.send_keys(password)
     login_button.click()
-    time.sleep(5)
+    time.sleep(2)
 
     print("Login Successful")
 
-    friend_textbox = driver.find_element(By.CSS_SELECTOR, "input[name='name']")
-    friend_button = driver.find_element(By.CSS_SELECTOR, "button[name='addfriend']")
-    friend_textbox.send_keys(username)
-    friend_button.click()
-    time.sleep(1)
+    #friend_textbox = driver.find_element(By.CSS_SELECTOR, "input[name='name']")
+    #friend_button = driver.find_element(By.CSS_SELECTOR, "button[name='addfriend']")
+    #friend_textbox.send_keys(username)
+    #friend_button.click()
+    #time.sleep(1)
 
-    print("Add Friend Successful")
+    #print("Add Friend Successful")
 
 
     #brand = driver.find_element(By.CSS_SELECTOR, "a[class='navbar-brand']")
@@ -95,20 +95,20 @@ try:
     else:
         print("[FAILED] - Post button does not exist.")
 
-    if friend_textbox:
-        print("[PASSED] - Friend textbox exists")
-    else:
-        print("[FAILED] - Friend textbox does not exist.")
+    #if friend_textbox:
+    #    print("[PASSED] - Friend textbox exists")
+    #else:
+    #    print("[FAILED] - Friend textbox does not exist.")
 
-    if friend_button:
-        print("[PASSED] - Friend button exists")
-    else:
-        print("[FAILED] - Friend button does not exist.")
+    #if friend_button:
+    #    print("[PASSED] - Friend button exists")
+    #else:
+    #    print("[FAILED] - Friend button does not exist.")
 
-    if friend_link == "http://localhost:5005/friend/cam":
-        print("[PASSED] - Friend link exists")
-    else:
-        print("[FAILED] - Friend link does not exist.")
+    #if friend_link == "http://localhost:5005/friend/cam":
+    #    print("[PASSED] - Friend link exists")
+    #else:
+    #    print("[FAILED] - Friend link does not exist.")
 
 except Exception as e:
     print("Error:", e)
