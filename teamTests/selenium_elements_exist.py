@@ -29,7 +29,7 @@ try:
     username_input.send_keys(username)
     password_input.send_keys(password)
     login_button.click()
-    time.sleep(2)
+    time.sleep(5)
 
     print("Login Successful")
 
