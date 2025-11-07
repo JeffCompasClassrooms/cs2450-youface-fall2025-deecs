@@ -40,4 +40,8 @@ jobs:
         env:
           SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
         run: |
-          python selenium_example.py
+          python teamTests/selenium_suzanne.py
+          python teamTests/selenium_elements_exist.py
+          python teamTests/selenium_feed.py
+          python teamTests/test_friending.py
+          python teamTests/selenium_homebar.py
