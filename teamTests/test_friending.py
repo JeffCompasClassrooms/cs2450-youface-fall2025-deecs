@@ -16,30 +16,39 @@ options.add_argument('--remote-debugging-port=9222')
 #service = Service('./chromedriver')
 driver = webdriver.Chrome(options=options)
 
-def del_user():
-    empty_db = {"_default" : {}, "posts" : {}, "users" : {}}
-    with open("../db.json", 'w') as f:
-        json.dump(empty_db, f, indent=2)
+def del_user(password):
+   pass 
 
 def logout():
-    logout_button = driver.find_element(By.CSS_SELECTOR, "button[name='logout']")
+    logout_button = driver.find_element(By.CSS_SELECTOR, "aside.sidebar button.logout-btn")
     logout_button.click()
     time.sleep(1)
 
 def create_account(email, password, username, fname, lname):
-    email_input = driver.find_element(By.CSS_SELECTOR, "input[name='email']")
+    email_input = driver.find_element(By.CSS_SELECTOR, "form[action='/signup'] input[name='email']")
     username_input = driver.find_element(By.CSS_SELECTOR, "input[name='username']")
-    password_input = driver.find_element(By.CSS_SELECTOR, "input[name='password']")
+    password_input = driver.find_element(By.CSS_SELECTOR, "form[action='/signup'] input[name='password']")
+    fname_input = driver.find_element(By.CSS_SELECTOR, "input[name='first_name']")
+    lname_input = driver.find_element(By.CSS_SELECTOR, "input[name='last_name']")
+    email_input.send_keys(email)
     username_input.send_keys(username)
     password_input.send_keys(password)
-    create_account_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Create']")
+    fname_input.send_keys(fname)
+    lname_input.send_keys(lname)
+    create_account_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Create Account']")
     create_account_button.click()
+    try:
+        success_banner = driver.find_element(By.CSS_SELECTOR, "div.alert-danger")
+        login(email, password)
+    except Exception as e:
+        pass
 
-def login(username, password):
-    username_input = driver.find_element(By.CSS_SELECTOR, "input[name='username']")
+
+def login(email, password):
+    email_input = driver.find_element(By.CSS_SELECTOR, "input[name='email']")
     password_input = driver.find_element(By.CSS_SELECTOR, "input[name='password']")
     login_button = driver.find_element(By.CSS_SELECTOR, "input[value='Login']")
-    username_input.send_keys(username)
+    email_input.send_keys(email)
     password_input.send_keys(password)
     time.sleep(1)
     login_button.click()
@@ -61,13 +70,13 @@ def add_friend(friend_name):
 
 try:
     driver.set_window_size(1200, 800)
-    driver.get("http://localhost:5005/loginscreen")
+    driver.get("http://localhost:5005/login_screen")
     time.sleep(1)
     total_tests = 0
     successful_tests = 0
     print("--= Beginning Tests - Dayne Wyler =--")
 
-    create_account("doe@doe.com", "testing", "John" "John", "Doe")
+    create_account("doe@doe.com", "testing", "John", "John", "Doe")
     
     add_friend_button = None
     add_friend_input_form = driver.find_element(By.CSS_SELECTOR, "form[action='/addfriend'")
@@ -87,7 +96,7 @@ try:
 
 
     total_tests += 1
-    if add_friend_input_form_name == "Add Friend":
+    if add_friend_input_form_name == "ADD AGENT":
         print("[PASSED] - Add Friend Form Name is Correct.")
         successful_tests += 1
     else:
@@ -110,7 +119,7 @@ try:
         print("[FAILED] - Added Non-existent User as Friend")
 
     logout()
-    create_account("jane@doe.com", "tester", "Jane" "Jane", "Doe")
+    create_account("jane@doe.com", "tester", "Jane", "Jane", "Doe")
 
     total_tests += 1
     try:
