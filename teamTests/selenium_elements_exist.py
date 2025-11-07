@@ -42,26 +42,26 @@ try:
     else:
         print("[FAILED] - Login button doesn't exist")
 
-    if username_input and password_input and login_button:
-        username_input.send_keys(username)
-        password_input.send_keys(password)
-        login_button.click()
-        time.sleep(2)
+    #if username_input and password_input and login_button:
+        #username_input.send_keys(username)
+        #password_input.send_keys(password)
+        #login_button.click()
+        #time.sleep(2)
 
-        print("Login Successful")
+        #print("Login Successful")
 
-        post_textbox = driver.find_element(By.CSS_SELECTOR, "textarea[name='post']")
-        post_button = driver.find_element(By.CSS_SELECTOR, "button[name='post-submit']")
+        #post_textbox = driver.find_element(By.CSS_SELECTOR, "textarea[name='post']")
+        #post_button = driver.find_element(By.CSS_SELECTOR, "button[name='post-submit']")
 
-        if post_textbox:
-            print("[PASSED] - Post textbox exists")
-        else:
-            print("[FAILED] - Post textbox does not exist.")
+        #if post_textbox:
+        #    print("[PASSED] - Post textbox exists")
+        #else:
+        #    print("[FAILED] - Post textbox does not exist.")
 
-        if post_button:
-            print("[PASSED] - Post button exists")
-        else:
-            print("[FAILED] - Post button does not exist.")
+        #if post_button:
+        #    print("[PASSED] - Post button exists")
+        #else:
+        #    print("[FAILED] - Post button does not exist.")
    
     #friend_textbox = driver.find_element(By.CSS_SELECTOR, "input[name='name']")
     #friend_button = driver.find_element(By.CSS_SELECTOR, "button[name='addfriend']")
