@@ -67,13 +67,13 @@ def add_friend(friend_name):
 
 
 #element.class works, spaces indicate descendants, < indicates when an element is directly inside of another element eg h1 > a for an anchor tag inside of an h1 tag
+    total_tests = 0
+    successful_tests = 0
 
 try:
     driver.set_window_size(1200, 800)
-    driver.get("http://localhost:5005/login_screen")
+    driver.get("http://localhost:5005/loginscreen")
     time.sleep(1)
-    total_tests = 0
-    successful_tests = 0
     print("--= Beginning Tests - Dayne Wyler =--")
 
     create_account("doe@doe.com", "testing", "John", "John", "Doe")
