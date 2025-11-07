@@ -16,7 +16,7 @@ options.add_argument('--remote-debugging-port=9222')
 #service = Service('./chromedriver')
 driver = webdriver.Chrome(options=options)
 
-def reset_db():
+def del_user():
     empty_db = {"_default" : {}, "posts" : {}, "users" : {}}
     with open("../db.json", 'w') as f:
         json.dump(empty_db, f, indent=2)
@@ -26,21 +26,26 @@ def logout():
     logout_button.click()
     time.sleep(1)
 
-def login(username, password):
+def create_account(email, password, username, fname, lname):
+    email_input = driver.find_element(By.CSS_SELECTOR, "input[name='email']")
     username_input = driver.find_element(By.CSS_SELECTOR, "input[name='username']")
     password_input = driver.find_element(By.CSS_SELECTOR, "input[name='password']")
     username_input.send_keys(username)
     password_input.send_keys(password)
     create_account_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Create']")
     create_account_button.click()
+
+def login(username, password):
+    username_input = driver.find_element(By.CSS_SELECTOR, "input[name='username']")
+    password_input = driver.find_element(By.CSS_SELECTOR, "input[name='password']")
+    login_button = driver.find_element(By.CSS_SELECTOR, "input[value='Login']")
+    username_input.send_keys(username)
+    password_input.send_keys(password)
     time.sleep(1)
+    login_button.click()
+    time.sleep(2)
     try:
-        taken_us_banner = driver.find_element(By.CSS_SELECTOR, "div.alert-danger")
-        login_button = driver.find_element(By.CSS_SELECTOR, "input[value='Login']")
-        username_input.send_keys(username)
-        password_input.send_keys(password)
-        login_button.click()
-        time.sleep(2)
+        taken_us_banner = driver.find_element(By.CSS_SELECTOR, "div.alert-danger")  
     except Exception as e:
         pass#print("New account created")
 
@@ -51,7 +56,6 @@ def add_friend(friend_name):
         submit_button.click()
         time.sleep(1)
 
-reset_db()
 
 #element.class works, spaces indicate descendants, < indicates when an element is directly inside of another element eg h1 > a for an anchor tag inside of an h1 tag
 
@@ -63,7 +67,7 @@ try:
     successful_tests = 0
     print("--= Beginning Tests - Dayne Wyler =--")
 
-    login("John", "Doe")
+    create_account("doe@doe.com", "testing", "John" "John", "Doe")
     
     add_friend_button = None
     add_friend_input_form = driver.find_element(By.CSS_SELECTOR, "form[action='/addfriend'")
@@ -106,7 +110,7 @@ try:
         print("[FAILED] - Added Non-existent User as Friend")
 
     logout()
-    login("Jane", "Doe")
+    create_account("jane@doe.com", "tester", "Jane" "Jane", "Doe")
 
     total_tests += 1
     try:
@@ -172,6 +176,8 @@ except Exception as e:
 finally:
     print(str(total_tests) + " Tests Ran: " + str(successful_tests) + " Tests Succeeded")
     print("--= Ending Tests =--")
+    del_user("John")
+    del_user("Jane")
     driver.quit()
 
 
