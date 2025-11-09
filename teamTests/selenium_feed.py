@@ -12,42 +12,42 @@ options.add_argument("--disable-dev-shm-usage")
 driver = webdriver.Chrome(options=options)
 
 
-#def locateNewPostSection():
-#    section = driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[1]/div/div/h3")
-#    if(section and section.text == "New Post"):
-#        print("[PASSED] - New Post section found")
-#    else:
-#        print("[FAILED] - New Post section not found")
+def locateNewPostSection():
+    section = driver.find_element(By.XPATH, "/html/body/div/main/div/div[2]/div[1]/div[1]/div/h3")
+    if(section and section.text == "UPDATE"):
+        print("[PASSED] - New Post section found")
+    else:
+        print("[FAILED] - New Post section not found")
 
-#def locateNewPostTextBox():
-#    section = driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[1]/div/div/form/div/textarea")
-#    if section:
-#        print("[PASSED] - New Post text box section found")
-#        section.send_keys("Testing post")
-#        time.sleep(4)
-#    else:
-#        print("[FAILED] - New Post text box section not found")
+def locateNewPostTextBox():
+    section = driver.find_element(By.XPATH, "/html/body/div/main/div/div[2]/div[1]/div[1]/div/form/div/textarea")
+    if section:
+        print("[PASSED] - New Post text box section found")
+        section.send_keys("Testing post")
+        time.sleep(4)
+    else:
+        print("[FAILED] - New Post text box section not found")
 
-#def locateSubmitButton():
-#    button = driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[1]/div/div/form/button")
-#    if button:
-#        print("[PASSED] - Submit button found")
-#        button_color = button.value_of_css_property("background-color")
-#        if button_color in ("rgb(0, 140, 186)", "rgba(0, 140, 186, 1)"):
-#            print("[PASSED] - Submit button is blue")
-#        else:
-#            print("[FAILED] - Submit button not blue")
-#        button.click()
-#        time.sleep(3)
-#    else:
-#        print("[FAILED] - Submit button not found")
+def locateTransmitButton():
+    button = driver.find_element(By.XPATH, "/html/body/div/main/div/div[2]/div[1]/div[1]/div/form/button")
+    if button:
+        print("[PASSED] - Transmit button found")
+        button_color = button.value_of_css_property("background-color")
+        if button_color in ("rgba(0, 0, 0, 0)", "transparent"):
+            print("[PASSED] - Transmit button is transparent")
+        else:
+            print("[FAILED] - Transmit button not transparent")
+        button.click()
+        time.sleep(3)
+    else:
+        print("[FAILED] - Transmit button not found")
 
-#def locateMyFeed():
-#    section = driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[1]/h2")
-#    if section:
-#        print("[PASSED] - My Feed section found")
-#    else:
-#        print("[FAILED] - My Feed section not found")
+def locateMyFeed():
+    section = driver.find_element(By.XPATH, "/html/body/div/main/div/div[1]/h1")
+    if section:
+        print("[PASSED] - My Feed section found")
+    else:
+        print("[FAILED] - My Feed section not found")
 
 #def locateNewPostUsername():
 #    user = driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[1]/div[2]/div/h4")
@@ -86,8 +86,8 @@ try:
         password_txt = driver.find_element(By.CSS_SELECTOR, "input[type='password'][name='password']")
         password_txt.send_keys("test")
         
-#        login_button.click()
-#        time.sleep(3)
+        login_button.click()
+        time.sleep(3)
 #        welcome_line = driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/h1")
 #        if(welcome_line and welcome_line.text == "Welcome, emma!"):
 #            print("[PASSED] - User successfully logged in")
@@ -105,7 +105,10 @@ try:
 #
 #    else:
 #        print("[FAILED] - Login button not found.")
-
+    locateMyFeed()
+    locateNewPostSection()
+    locateNewPostTextBox()
+    locateTransmitButton()
 except Exception as e:
     print("Error:", e)
 
