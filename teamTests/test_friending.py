@@ -100,8 +100,8 @@ try:
     except Exception as e:
         print("[FAILED] - Added Non-existent User as Friend")
 
-    logout()
-    login("Jane", "Doe")
+    # logout()
+    # login("Jane", "Doe")
 
     total_tests += 1
     try:
