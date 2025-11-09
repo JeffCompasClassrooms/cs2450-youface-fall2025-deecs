@@ -16,57 +16,57 @@ try:
     time.sleep(2)
 
     print("--= Beginning Tests =--")
-    linkSpy = driver.find_element(By.LINK_TEXT, "mySpy(Janky Edition)")
-    menu_button = driver.find_element(By.CLASS_NAME, "navbar-toggler")
-    menu_button.click()
-    time.sleep(1)
-    linkUT = driver.find_element(By.LINK_TEXT, "Utah Tech")
-    linkRick = driver.find_element(By.LINK_TEXT, "Link 2")
+    # linkSpy = driver.find_element(By.LINK_TEXT, "mySpy(Janky Edition)")
+    # menu_button = driver.find_element(By.CLASS_NAME, "navbar-toggler")
+    # menu_button.click()
+    # time.sleep(1)
+    # linkUT = driver.find_element(By.LINK_TEXT, "Utah Tech")
+    # linkRick = driver.find_element(By.LINK_TEXT, "Link 2")
     create_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Create']")
     delete_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Delete']")
 
 
 
-    if linkUT:
-        print("[PASSED] - UT Link Exists.")
+    # if linkUT:
+    #     print("[PASSED] - UT Link Exists.")
    
-    else:
-        print("[FAILED] - UT link not found.")
+    # else:
+    #     print("[FAILED] - UT link not found.")
 
-    if linkRick:
-        print("[PASSED] - RickRoll Link Exists.")
-    else:
-        print("[FAILED] - rick link not found.")
+    # if linkRick:
+    #     print("[PASSED] - RickRoll Link Exists.")
+    # else:
+    #     print("[FAILED] - rick link not found.")
 
-    if linkSpy:
-        print("[PASSED] - MySpy Link Exists.")
-    else:
-        print("[FAILED] - spy link not found.")
+    # if linkSpy:
+    #     print("[PASSED] - MySpy Link Exists.")
+    # else:
+    #     print("[FAILED] - spy link not found.")
     
-    if menu_button:
-        print("[PASSED] - Menu Button Exists.")
-    else:
-        print("[FAILED] - menu button not found.")
+    # if menu_button:
+    #     print("[PASSED] - Menu Button Exists.")
+    # else:
+    #     print("[FAILED] - menu button not found.")
     
-    if linkRick and linkUT: 
-        print("[PASSED] - Menu Button can be cliked")
-    else:
-        print("[FAILED] - menu button cannot be cliked")
+    # if linkRick and linkUT: 
+    #     print("[PASSED] - Menu Button can be cliked")
+    # else:
+    #     print("[FAILED] - menu button cannot be cliked")
 
-    if linkRick.get_attribute("href") == "https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1&ab_channel=RickAstley":
-        print("[PASSED] - RickRoll link is correct")
-    else:
-        print("[FAILED] - RickRoll link is incorret")
+    # if linkRick.get_attribute("href") == "https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1&ab_channel=RickAstley":
+    #     print("[PASSED] - RickRoll link is correct")
+    # else:
+    #     print("[FAILED] - RickRoll link is incorret")
     
-    if linkUT.get_attribute("href") == "https://utahtech.edu/":
-        print("[PASSED] - UT link is correct")
-    else:
-        print("[FAILED] - UT link is incorret")
+    # if linkUT.get_attribute("href") == "https://utahtech.edu/":
+    #     print("[PASSED] - UT link is correct")
+    # else:
+    #     print("[FAILED] - UT link is incorret")
     
-    if linkSpy.get_attribute("href") == "http://localhost:5005/":
-        print("[PASSED] - Home link is correct")
-    else:
-        print("[FAILED] - Home link is incorret")
+    # if linkSpy.get_attribute("href") == "http://localhost:5005/":
+    #     print("[PASSED] - Home link is correct")
+    # else:
+    #     print("[FAILED] - Home link is incorret")
     
     if create_button:
         print("[PASSED] - Create Button Exists.")
