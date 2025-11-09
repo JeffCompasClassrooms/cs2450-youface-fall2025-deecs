@@ -87,7 +87,7 @@ try:
         password_txt.send_keys("test")
         
         login_button.click()
-        time.sleep(3)
+        time.sleep(4)
 #        welcome_line = driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/h1")
 #        if(welcome_line and welcome_line.text == "Welcome, emma!"):
 #            print("[PASSED] - User successfully logged in")
