@@ -20,9 +20,10 @@ def del_user(password):
 def logout():
     logout_button = driver.find_element(By.CSS_SELECTOR, "aside.sidebar button.logout-btn")
     logout_button.click()
-    time.sleep(1)
+    time.sleep(2)
 
 def create_account(email, password, username, fname, lname):
+    time.sleep(1)
     email_input = driver.find_element(By.CSS_SELECTOR, "form[action='/signup'] input[name='email']")
     username_input = driver.find_element(By.CSS_SELECTOR, "input[name='username']")
     password_input = driver.find_element(By.CSS_SELECTOR, "form[action='/signup'] input[name='password']")
@@ -35,10 +36,13 @@ def create_account(email, password, username, fname, lname):
     lname_input.send_keys(lname)
     create_account_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Create Account']")
     create_account_button.click()
+    time.sleep(2)
     try:
         success_banner = driver.find_element(By.CSS_SELECTOR, "div.alert-danger")
         login(email, password)
     except Exception as e:
+        # Account creation succeeded, wait for redirect to complete
+        time.sleep(2)
         pass
 
 
@@ -75,6 +79,7 @@ try:
     print("--= Beginning Tests - Dayne Wyler =--")
 
     create_account("doe@doe.com", "testing", "John", "John", "Doe")
+    time.sleep(2)
     
     add_friend_button = None
     add_friend_input_form = driver.find_element(By.CSS_SELECTOR, "form[action='/addfriend']")
@@ -117,7 +122,9 @@ try:
         print("[FAILED] - Added Non-existent User as Friend")
 
     logout()
+    time.sleep(2)
     create_account("jane@doe.com", "tester", "Jane", "Jane", "Doe")
+    time.sleep(2)
 
     total_tests += 1
     try:
@@ -170,7 +177,7 @@ try:
     try:
         friend_link = driver.find_element(By.CSS_SELECTOR, "div.col-lg-3 a[href='/friend/John']")
         friend_link.click()
-        time.sleep(1)
+        time.sleep(2)
         posts = driver.find_element(By.CSS_SELECTOR, "div.col-lg-8 h2").text
         print("[PASSED] - Friend Hyperlink Functioned Correctly")
         successful_tests += 1
