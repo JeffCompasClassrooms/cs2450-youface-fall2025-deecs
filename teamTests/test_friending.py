@@ -5,15 +5,15 @@ from selenium.webdriver.chrome.options import Options
 import time
 
 options = Options()
-#options.add_argument("--headless")
+options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 options.add_argument('--remote-debugging-port=9222')
 
 # Don't specify chromedriver path!
 # Dayne - Selenium Manager doesn't seem to be packaged for ubuntu
-service = Service('./chromedriver')
-driver = webdriver.Chrome(options=options, service=service)
+#service = Service('./chromedriver')
+driver = webdriver.Chrome(options=options)
 
 def del_user():
     pass
