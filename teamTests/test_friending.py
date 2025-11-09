@@ -71,7 +71,7 @@ successful_tests = 0
 try:
     #driver.set_window_size(1200, 800)
     driver.get("http://localhost:5005/loginscreen")
-    time.sleep(1)
+    time.sleep(2)
     print("--= Beginning Tests - Dayne Wyler =--")
 
     create_account("doe@doe.com", "testing", "John", "John", "Doe")
