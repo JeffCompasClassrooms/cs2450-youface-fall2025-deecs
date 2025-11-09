@@ -69,7 +69,7 @@ total_tests = 0
 successful_tests = 0
 
 try:
-    driver.set_window_size(1200, 800)
+    #driver.set_window_size(1200, 800)
     driver.get("http://localhost:5005/loginscreen")
     time.sleep(1)
     print("--= Beginning Tests - Dayne Wyler =--")
