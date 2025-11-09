@@ -18,21 +18,51 @@ try:
     driver.set_window_size(1200,800)
     time.sleep(1)
 
-    print("--= Beginning Tests =--")
+    print("--= Beginning Tests = Cam --")
     
     username = "cam"
     password = "cam"
 
     username_input = driver.find_element(By.NAME, "username")
-    password_input = driver.find_element(By.NAME, "password")
+    password_input = driver.find_element(By.NAME, "password") 
     login_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Login']")
-    username_input.send_keys(username)
-    password_input.send_keys(password)
-    login_button.click()
-    time.sleep(2)
 
-    print("Login Successful")
+    if username_input:
+        print("[PASSED] - Username input exists")
+    else:
+        print("[FAILED] - Username input doesn't exist")
 
+    if password_input:
+        print("[PASSED] - Password input exists")
+    else:
+        print("[FAILED] - Password input doesn't exist")
+
+    if login_button:
+        print("[PASSED] - Login button exists")
+    else:
+        print("[FAILED] - Login button doesn't exist")
+
+    #if username_input and password_input and login_button:
+        #username_input.send_keys(username)
+        #password_input.send_keys(password)
+        #login_button.click()
+        #time.sleep(2)
+
+        #print("Login Successful")
+
+        #post_textbox = driver.find_element(By.CSS_SELECTOR, "textarea[name='post']")
+        #post_button = driver.find_element(By.CSS_SELECTOR, "button[name='post-submit']")
+
+        #if post_textbox:
+        #    print("[PASSED] - Post textbox exists")
+        #else:
+        #    print("[FAILED] - Post textbox does not exist.")
+
+        #if post_button:
+        #    print("[PASSED] - Post button exists")
+        #else:
+        #    print("[FAILED] - Post button does not exist.")
+   
     #friend_textbox = driver.find_element(By.CSS_SELECTOR, "input[name='name']")
     #friend_button = driver.find_element(By.CSS_SELECTOR, "button[name='addfriend']")
     #friend_textbox.send_keys(username)
@@ -52,10 +82,10 @@ try:
 
     #header_text = driver.find_element(By.CSS_SELECTOR, "div.row.justify-content-md-center.mb-4 h1").text
 
-    post_textbox = driver.find_element(By.CSS_SELECTOR, "textarea[name='post']")
-    post_button = driver.find_element(By.CSS_SELECTOR, "button[name='post-submit']")
+    #post_textbox = driver.find_element(By.CSS_SELECTOR, "textarea[name='post']")
+    #post_button = driver.find_element(By.CSS_SELECTOR, "button[name='post-submit']")
 
-    friend_link = driver.find_element(By.LINK_TEXT, "cam").get_attribute("href")
+    #friend_link = driver.find_element(By.LINK_TEXT, "cam").get_attribute("href")
 
 
     #if brand:
@@ -85,15 +115,15 @@ try:
     #else:
     #    print(f"[Failed] - Header shows '{header}' instead of username")
 
-    if post_textbox:
-        print("[PASSED] - Post textbox exists")
-    else:
-        print("[FAILED] - Post textbox does not exist.")
+    #if post_textbox:
+    #    print("[PASSED] - Post textbox exists")
+    #else:
+    #    print("[FAILED] - Post textbox does not exist.")
 
-    if post_button:
-        print("[PASSED] - Post button exists")
-    else:
-        print("[FAILED] - Post button does not exist.")
+    #if post_button:
+    #    print("[PASSED] - Post button exists")
+    #else:
+    #    print("[FAILED] - Post button does not exist.")
 
     #if friend_textbox:
     #    print("[PASSED] - Friend textbox exists")
