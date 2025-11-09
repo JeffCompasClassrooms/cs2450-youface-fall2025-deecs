@@ -58,7 +58,7 @@ try:
     successful_tests = 0
     print("--= Beginning Tests - Dayne Wyler =--")
 
-    # login("John", "Doe")
+    login("John", "Doe")
     
     # add_friend_button = None
     # add_friend_input_form = driver.find_element(By.CSS_SELECTOR, "form[action='/addfriend'")
