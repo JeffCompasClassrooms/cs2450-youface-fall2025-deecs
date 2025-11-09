@@ -48,8 +48,6 @@ def add_friend(friend_name):
         submit_button.click()
         time.sleep(1)
 
-reset_db()
-
 #element.class works, spaces indicate descendants, < indicates when an element is directly inside of another element eg h1 > a for an anchor tag inside of an h1 tag
 
 try:
