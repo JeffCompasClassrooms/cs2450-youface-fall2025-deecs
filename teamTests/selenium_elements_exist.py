@@ -12,8 +12,8 @@ options.add_argument("--disable-dev-shm-usage")
 driver = webdriver.Chrome(options=options)
 
 try:
-    driver.get("http://localhost:5005/")
-    time.sleep(2)
+    driver.get("http://localhost:5005/loginscreen")
+    time.sleep(5)
 
     driver.set_window_size(1200,800)
     time.sleep(1)

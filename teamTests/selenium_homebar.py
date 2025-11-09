@@ -13,7 +13,7 @@ driver = webdriver.Chrome(options=options)
 
 try:
     driver.get("http://localhost:5005/loginscreen")
-    time.sleep(2)
+    time.sleep(5)
 
     print("--= Beginning Tests =--")
     linkSpy = driver.find_element(By.LINK_TEXT, "mySpy(Janky Edition)")
