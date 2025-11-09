@@ -77,7 +77,7 @@ try:
     create_account("doe@doe.com", "testing", "John", "John", "Doe")
     
     add_friend_button = None
-    add_friend_input_form = driver.find_element(By.CSS_SELECTOR, "form[action='/addfriend'")
+    add_friend_input_form = driver.find_element(By.CSS_SELECTOR, "form[action='/addfriend']")
     add_friend_input_form_name = driver.find_element(By.CSS_SELECTOR, "div.col-lg-3  h3[class='card-title']").text
     add_friend_input = driver.find_element(By.CSS_SELECTOR, "input[placeholder='username']")
     add_friend_input.send_keys("john")
