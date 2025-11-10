@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 
 options = Options()
-options.add_argument("--headless")
+#options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 
@@ -43,11 +43,11 @@ def locateTransmitButton():
         print("[FAILED] - Transmit button not found")
 
 def locateMyFeed():
-    section = driver.find_element(By.XPATH, "/html/body/div/main/div/div[1]/h1")
+    section = driver.find_element(By.CSS_SELECTOR, "body > div > main > div > div.row.mb-4 > h1")
     if section:
-        print("[PASSED] - My Feed section found")
+        print("[PASSED] - Agent Feed section found")
     else:
-        print("[FAILED] - My Feed section not found")
+        print("[FAILED] - Agent Feed section not found")
 
 #def locateNewPostUsername():
 #    user = driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[1]/div[2]/div/h4")
