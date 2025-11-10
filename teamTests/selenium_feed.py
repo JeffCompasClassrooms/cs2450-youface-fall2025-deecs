@@ -43,7 +43,7 @@ def locateTransmitButton():
         print("[FAILED] - Transmit button not found")
 
 def locateMyFeed():
-    section = driver.find_element(By.CSS_SELECTOR, "body > div > main > div > div.row.mb-4 > h1")
+    section = driver.find_element(By.XPATH, "//main//h1[normalize-space()='Agent Feed']")
     if section:
         print("[PASSED] - Agent Feed section found")
     else:
