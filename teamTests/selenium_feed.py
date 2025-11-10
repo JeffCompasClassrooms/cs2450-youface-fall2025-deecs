@@ -88,6 +88,10 @@ try:
         
         login_button.click()
         time.sleep(4)
+        locateMyFeed()
+        locateNewPostSection()
+        locateNewPostTextBox()
+        locateTransmitButton()
 #        welcome_line = driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/h1")
 #        if(welcome_line and welcome_line.text == "Welcome, emma!"):
 #            print("[PASSED] - User successfully logged in")
@@ -105,10 +109,6 @@ try:
 #
 #    else:
 #        print("[FAILED] - Login button not found.")
-    locateMyFeed()
-    locateNewPostSection()
-    locateNewPostTextBox()
-    locateTransmitButton()
 except Exception as e:
     print("Error:", e)
 
