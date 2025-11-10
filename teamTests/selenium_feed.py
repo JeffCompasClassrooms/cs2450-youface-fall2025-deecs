@@ -13,14 +13,14 @@ driver = webdriver.Chrome(options=options)
 
 
 def locateNewPostSection():
-    section = driver.find_element(By.XPATH, "/html/body/div/main/div/div[2]/div[1]/div[1]/div/h3")
+    section = driver.find_element(By.XPATH, "/html/body/div/main/div/div[3]/div[1]/div/div/h3")
     if(section and section.text == "UPDATE"):
         print("[PASSED] - New Post section found")
     else:
         print("[FAILED] - New Post section not found")
 
 def locateNewPostTextBox():
-    section = driver.find_element(By.XPATH, "/html/body/div/main/div/div[2]/div[1]/div[1]/div/form/div/textarea")
+    section = driver.find_element(By.XPATH, "/html/body/div/main/div/div[3]/div[1]/div/div/form/div/textarea")
     if section:
         print("[PASSED] - New Post text box section found")
         section.send_keys("Testing post")
@@ -29,7 +29,7 @@ def locateNewPostTextBox():
         print("[FAILED] - New Post text box section not found")
 
 def locateTransmitButton():
-    button = driver.find_element(By.XPATH, "/html/body/div/main/div/div[2]/div[1]/div[1]/div/form/button")
+    button = driver.find_element(By.XPATH, "/html/body/div/main/div/div[3]/div[1]/div/div/form/button")
     if button:
         print("[PASSED] - Transmit button found")
         button_color = button.value_of_css_property("background-color")
@@ -76,17 +76,19 @@ try:
     time.sleep(2)
 
     print("--= Beginning Tests - Emma =--")
-    login_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Login']")
+    create_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Create']")
 
-    if login_button:
+    if create_button:
         print("[PASSED] - Login button exists")
         username_txt = driver.find_element(By.CSS_SELECTOR, "input[type='text'][name='username']")
         username_txt.send_keys("emma")
 
         password_txt = driver.find_element(By.CSS_SELECTOR, "input[type='password'][name='password']")
         password_txt.send_keys("test")
+
+
         
-        login_button.click()
+        create_button.click()
         time.sleep(4)
         locateMyFeed()
         locateNewPostSection()
