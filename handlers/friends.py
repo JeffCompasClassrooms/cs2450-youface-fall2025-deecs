@@ -8,7 +8,7 @@ blueprint = flask.Blueprint("friends", __name__)
 @login_required
 def addfriend():
     user_id = flask.g.user['id']
-    friend_username = flask.request.form.get("friend_username")
+    friend_username = flask.request.form.get("friend_name")
 
     if not friend_username:
         flask.flash("Username cannot be empty.", "danger")

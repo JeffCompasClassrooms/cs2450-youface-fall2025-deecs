@@ -3,8 +3,8 @@
 {% block content %}
 <div class="row justify-content-md-center mb-4">
   <h3 class="card-title">{{ friend.username }}</h3>
-  <form method="post" action="{{ url_for('friends.unfriend') }}">
-      <input type="hidden" name="name" value="{{ friend.username }}">
+  <form method="post" name="friend_name" action="{{ url_for('friends.unfriend') }}">
+      <input type="hidden" name="friend_username" value="{{ friend.username }}">
       <button type="submit" class="btn btn-danger btn-sm">Remove Connection</button>
   </form>
 </div>

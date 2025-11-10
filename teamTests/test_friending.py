@@ -1,17 +1,16 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 import time
 
 options = Options()
-options.add_argument("--headless")
+#options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 #options.add_argument('--remote-debugging-port=9222')
 
 # Don't specify chromedriver path!
-# Dayne - Selenium Manager doesn't seem to be packaged for ubuntu
-#service = Service('./chromedriver')
 driver = webdriver.Chrome(options=options)
 
 def del_user(password):
@@ -74,7 +73,7 @@ successful_tests = 0
 
 try:
     #driver.set_window_size(1200, 800)
-    driver.get("http://localhost:5005/loginscreen")
+    driver.get("http://localhost:5005/login_screen")
     time.sleep(5)
     print("--= Beginning Tests - Dayne Wyler =--")
 
