@@ -1,56 +1,73 @@
 import flask
 from handlers.auth import login_required
-from handlers import copy
 from db import contracts as contracts_db
+from handlers import copy 
 
 blueprint = flask.Blueprint("contracts", __name__)
 
 @blueprint.route("/assignments")
 @login_required
-def assignments():
+def index():
     user_profile = flask.g.user
     
     all_contracts = contracts_db.get_all_contracts()
+    claimed_contracts = contracts_db.get_claimed_contracts(user_profile['id'])
+    all_tags = contracts_db.get_all_tags()
 
     return flask.render_template(
         "assignments.html",
         title=copy.title,
-        subtitle=copy.subtitle,
         user=user_profile,
-        username=user_profile['username'],
-        contracts=all_contracts
+        unclaimed_contracts=all_contracts,
+        claimed_contracts=claimed_contracts,
+        tags=all_tags
     )
 
-@blueprint.route("/contract/create", methods=["POST"])
+@blueprint.route("/assignments/create", methods=["POST"])
 @login_required
-def create_contract():
+def create():
     user_id = flask.g.user['id']
+    
     title = flask.request.form.get("title")
     description = flask.request.form.get("description")
     pay_amount = flask.request.form.get("pay_amount")
-    tags = flask.request.form.getlist("tags")
+    tags = flask.request.form.getlist("tags") 
 
-    if not all([title, description, pay_amount, tags]):
-        flask.flash("All fields are required to create a contract.", "danger")
-        return flask.redirect(flask.url_for('contracts.assignments'))
+    if not title or not description or not pay_amount:
+        flask.flash("Title, description, and pay amount are required.", "danger")
+        return flask.redirect(flask.url_for("contracts.index"))
 
     try:
-        pay_value = int(pay_amount)
+        pay_amount_float = float(pay_amount)
     except ValueError:
         flask.flash("Pay amount must be a valid number.", "danger")
-        return flask.redirect(flask.url_for('contracts.assignments'))
+        return flask.redirect(flask.url_for("contracts.index"))
 
-    new_contract = contracts_db.create_contract(
+    data, error = contracts_db.create_contract(
         user_id=user_id,
         title=title,
         description=description,
-        pay_amount=pay_value,
+        pay_amount=pay_amount_float,
         tags=tags
     )
 
-    if new_contract:
-        flask.flash("Contract posted successfully.", "success")
+    if error:
+        flask.flash(f"Error creating directive: {error}", "danger")
     else:
-        flask.flash("Error posting contract. Please try again.", "danger")
+        flask.flash("Directive created successfully.", "success")
+    
+    return flask.redirect(flask.url_for("contracts.index"))
 
-    return flask.redirect(flask.url_for("contracts.assignments"))
+@blueprint.route("/assignments/claim/<contract_id>", methods=["POST"])
+@login_required
+def claim(contract_id):
+    user_id = flask.g.user['id']
+    
+    data, error = contracts_db.claim_contract(contract_id, user_id)
+    
+    if error:
+        flask.flash(f"Could not claim directive. {error}", "danger")
+    else:
+        flask.flash("Directive claimed.", "success")
+        
+    return flask.redirect(flask.url_for("contracts.index"))
