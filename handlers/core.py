@@ -11,7 +11,8 @@ blueprint = flask.Blueprint("core", __name__)
 def index():
     user_profile = flask.g.user
     
-    feed_posts = posts_db.get_feed_for_user(user_profile['id'])
+    feed_posts = posts_db.get_posts() 
+
     friends_list = users_db.get_friends(user_profile['id'])
 
     return flask.render_template(
