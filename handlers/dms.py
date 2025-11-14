@@ -12,7 +12,7 @@ def secure_channel():
     user_profile = flask.g.user
     user_id = user_profile['id']
     
-    conversations = dms_db.get_conversations(user_id)
+    conversations = dms_db.get_messages(user_id)
 
     return flask.render_template(
         "secure.html",
@@ -25,7 +25,7 @@ def secure_channel():
 
 @blueprint.route("/secure/send", methods=["POST"])
 @login_required
-def send_dm():
+def send_message():
     user_id = flask.g.user['id']
     
     recipient_username = flask.request.form.get("recipient_username")
@@ -44,7 +44,7 @@ def send_dm():
         flask.flash("You cannot send a message to yourself.", "warning")
         return flask.redirect(flask.url_for('dms.secure_channel'))
 
-    new_dm = dms_db.send_dm(
+    new_dm = dms_db.send_message(
         sender_id=user_id,
         recipient_id=recipient['id'],
         content=content

@@ -10,7 +10,7 @@
     <div class="card bg-light mb-3">
       <div class="card-body">
         <h3 class="card-title">Send Message</h3>
-        <form method="post" action="{{ url_for('dms.send_secure_message') }}">
+        <form method="post" action="{{ url_for('dms.send_message') }}">
           <div class="form-group">
             <label for="username">Agent Username</label>
             <input type="text" class="form-control" name="username" placeholder="Recipient's username" required>
