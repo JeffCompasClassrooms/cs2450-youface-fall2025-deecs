@@ -255,8 +255,8 @@ font-size: 1.5rem; line-height: 1; cursor: pointer; opacity: 0.6;
 .fade { opacity: 0; transition: opacity .15s linear; }
 .fade.show { opacity: 1; }
 
-/* Ensure light background applies when used with .card */
-.card.bg-light { background-color: var(--color-light); }
+/* Ensure light background applies when used with .card
+.card.bg-light { background-color: var(--color-light); } */
 
 /* Tighter, cleaner form header spacing inside cards */
 fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
@@ -563,4 +563,8 @@ form[action="/addfriend"] .btn:active {
     flex: 0 0 calc(var(--space-3) + var(--space-5));      /* ~1.25rem spacer */
     max-width: calc(var(--space-3) + var(--space-5));
   }
+}
+
+.bg-black .text-muted {
+  color: #888 !important; /* A lighter gray that's still "muted" */
 }
