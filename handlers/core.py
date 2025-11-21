@@ -2,7 +2,7 @@ import flask
 from handlers.auth import login_required
 from handlers import copy
 from db import users as users_db
-from db import posts as posts_db
+from db import posts_db
 
 blueprint = flask.Blueprint("core", __name__)
 
@@ -12,6 +12,10 @@ def index():
     user_profile = flask.g.user
     
     feed_posts = posts_db.get_posts() 
+    
+    # Fetch comments for each post
+    for post in feed_posts:
+        post['comments'] = posts_db.get_comments_for_post(post['post_id'])
 
     friends_list = users_db.get_friends(user_profile['id'])
 

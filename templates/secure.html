@@ -7,7 +7,7 @@
 
 <div class="row row-left">
   <div class="col col-lg-8 align-with-heading">
-    <div class="card bg-light mb-3">
+    <div class="card bg-black mb-3">
       <div class="card-body">
         <h3 class="card-title">Send Message</h3>
         <form method="post" action="{{ url_for('dms.send_secure_message') }}">
@@ -19,37 +19,122 @@
             <label for="content">Message</label>
             <textarea class="form-control" name="content" rows="3" placeholder="> Enter message..." required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary transmit-btn" name="post-submit">
-            <span class="btn-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M3 11.5l18-7-7 18-2.8-7.2L3 11.5zM13.2 13.2l6.8-8.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <span class="btn-label">Send</span>
-          </button>
+          <div style="text-align: right;">
+            <button type="submit" class="btn btn-primary transmit-btn" name="post-submit">
+              <span class="btn-label">Transmit</span>
+            </button>
+          </div>
         </form>
       </div>
     </div>
 
     <h2 class="">My Conversations</h2>
-    {% for msg in messages %}
-    <div class="card bg-light">
+    {% for convo in conversations %}
+    <div class="card bg-black mb-3">
       <div class="card-body">
-        <h4 class="card-title">
-          {% if msg.sender.username == user.username %}
-            To: {{ msg.receiver.username }}
-          {% else %}
-            From: {{ msg.sender.username }}
-          {% endif %}
-        </h4>
-        <h6 class="card-subtitle mb-2 text-muted">{{ msg.created_at|convert_time }}</h6>
-        <p class="card-text">{{ msg.content }}</p>
+        <!-- Conversation header (clickable) -->
+        <div style="cursor: pointer;" class="conversation-toggle" data-partner-id="{{ convo.partner_id }}">
+          <h4 class="card-title">{{ convo.partner.username }}</h4>
+          <h6 class="card-subtitle mb-2 text-muted">
+            {{ convo.latest_message.created_at|convert_time }}
+          </h6>
+          <p class="card-text" style="color: rgba(0,255,255,0.6);">
+            {% if convo.latest_message.sender_id == user['id'] %}
+              You: {{ convo.latest_message.content[:50] }}{% if convo.latest_message.content|length > 50 %}...{% endif %}
+            {% else %}
+              {{ convo.latest_message.content[:50] }}{% if convo.latest_message.content|length > 50 %}...{% endif %}
+            {% endif %}
+          </p>
+        </div>
+        
+        <!-- Conversation thread (hidden by default) -->
+        <div id="conversation-{{ convo.partner_id }}" class="conversation-thread" style="display: none; margin-top: 1rem; border-top: 1px solid rgba(0,255,255,0.2); padding-top: 1rem;">
+          
+          <!-- Message back-and-forth -->
+          <div class="message-list" style="max-height: 400px; overflow-y: auto; margin-bottom: 1rem;">
+            {% for msg in convo.messages %}
+            {% if msg.sender_id == user['id'] %}
+            <!-- Your message (right-aligned) -->
+            <div class="message-item mb-3" style="display: flex; justify-content: flex-end;">
+              <div style="max-width: 70%; text-align: right;">
+                <div style="background: rgba(0,255,255,0.15); border: 1px solid rgba(0,255,255,0.3); border-radius: 12px; padding: 0.75rem 1rem;">
+                  <div style="font-size: 0.85rem; color: rgba(0,255,255,0.7); margin-bottom: 0.25rem;">
+                    {{ msg.sender.username }}
+                  </div>
+                  <div style="color: #00ffff;">
+                    {{ msg.content }}
+                  </div>
+                  <div style="font-size: 0.75rem; color: rgba(0,255,255,0.5); margin-top: 0.25rem;">
+                    {{ msg.created_at|convert_time }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% else %}
+            <!-- Their message (left-aligned) -->
+            <div class="message-item mb-3" style="display: flex; justify-content: flex-start;">
+              <div style="max-width: 70%; text-align: left;">
+                <div style="background: rgba(0,255,255,0.08); border: 1px solid rgba(0,255,255,0.3); border-radius: 12px; padding: 0.75rem 1rem;">
+                  <div style="font-size: 0.85rem; color: rgba(0,255,255,0.7); margin-bottom: 0.25rem;">
+                    {{ msg.sender.username }}
+                  </div>
+                  <div style="color: #00ffff;">
+                    {{ msg.content }}
+                  </div>
+                  <div style="font-size: 0.75rem; color: rgba(0,255,255,0.5); margin-top: 0.25rem;">
+                    {{ msg.created_at|convert_time }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+          
+          <!-- Reply form -->
+          <form method="post" action="{{ url_for('dms.send_secure_message') }}" style="border-top: 1px solid rgba(0,255,255,0.2); padding-top: 1rem;">
+            <input type="hidden" name="username" value="{{ convo.partner.username }}">
+            <div class="form-group">
+              <textarea class="form-control" name="content" rows="2" placeholder="> Enter reply..." required></textarea>
+            </div>
+            <div style="text-align: right;">
+              <button type="submit" class="btn btn-sm btn-primary">
+                <span class="btn-label">Transmit Reply</span>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
     {% endfor %}
-    {% if not messages %}
+    
+    {% if not conversations %}
     <p>...no messages...</p>
     {% endif %}
   </div>
 </div>
+
+<script>
+// Toggle conversation thread
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.conversation-toggle').forEach(function(header) {
+    header.addEventListener('click', function(e) {
+      var partnerId = this.getAttribute('data-partner-id');
+      var thread = document.getElementById('conversation-' + partnerId);
+      
+      if (thread.style.display === 'none') {
+        thread.style.display = 'block';
+        // Scroll to bottom of messages
+        var messageList = thread.querySelector('.message-list');
+        if (messageList) {
+          messageList.scrollTop = messageList.scrollHeight;
+        }
+      } else {
+        thread.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
+
 {% endblock %}

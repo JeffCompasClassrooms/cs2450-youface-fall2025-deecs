@@ -4,7 +4,7 @@ import time
 import tinydb
 import unittest
 
-from db import posts
+from db import posts_db
 
 class TestLikeButton(unittest.TestCase):
 
@@ -39,7 +39,7 @@ class TestLikeButton(unittest.TestCase):
         # when called on a post, # of likes on that post should be increased by 1
         posts_table = self.db.table('posts')
         original_count = len(posts_table.get(doc_id=self.post_id)['likers'])
-        posts.like_post(self.db, self.post_id, self.username)
+        posts_db.like_post(self.db, self.post_id, self.username)
         new_count = len(posts_table.get(doc_id=self.post_id)['likers'])
 
         self.assertNotEqual(original_count, new_count, "Hey man, do better! "

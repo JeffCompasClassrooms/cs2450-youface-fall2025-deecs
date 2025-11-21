@@ -1,6 +1,6 @@
 import flask
 from handlers.auth import login_required
-from db import contracts as contracts_db
+from db import contracts_db as contracts_db
 from handlers import copy 
 
 blueprint = flask.Blueprint("contracts", __name__)
