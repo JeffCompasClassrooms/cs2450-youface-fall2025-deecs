@@ -118,8 +118,9 @@ def logout():
     flask.flash("You have been logged out.", "success")
     return flask.redirect(flask.url_for('auth.login_screen'))
 
-@blueprint.route("/delete", methods=['DELETE'])
-def delete_account():
+@blueprint.route("/delete_user", methods=["DELETE"])
+@login_required
+def delete_user():
     supabase = get_supabase()
     access_token = flask.session.get('access_token')
     if access_token:
