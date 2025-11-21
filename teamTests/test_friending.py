@@ -4,6 +4,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 import time
 
+#Postgres, Supabase, SQL
+# Wear black shirt
+
 options = Options()
 #options.add_argument("--headless")
 options.add_argument("--no-sandbox")
