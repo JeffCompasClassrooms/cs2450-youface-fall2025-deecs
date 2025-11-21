@@ -117,3 +117,16 @@ def logout():
     flask.session.clear()
     flask.flash("You have been logged out.", "success")
     return flask.redirect(flask.url_for('auth.login_screen'))
+
+@blueprint.route("/delete", methods=['DELETE'])
+def delete_account():
+    supabase = get_supabase()
+    access_token = flask.session.get('access_token')
+    if access_token:
+        try:
+            supabase.auth.delete_account(access_token)
+        except Exception:
+            print("Unsuccesful Deletion")
+    flask.session.clear()
+    flask.flash("Your account has been deleted.", "success")
+    return flask.redirect(flask.url_for('auth.login_screen'))
