@@ -48,11 +48,23 @@ def remove_friend(user_id, friend_id):
 def get_friends(user_id):
     supabase = get_supabase()
     try:
-        response = supabase.table('friends').select('profile:friend_id(*)').eq('user_id', user_id).execute()
-        friends_list = [item['profile'] for item in response.data if item.get('profile')]
-        return friends_list
+        # Get friend IDs first
+        response = supabase.table('friends').select('friend_id').eq('user_id', user_id).execute()
+        
+        if not response.data:
+            return []
+        
+        # Extract friend IDs
+        friend_ids = [item['friend_id'] for item in response.data]
+        
+        # Get profiles for those friend IDs
+        profiles_response = supabase.table('profiles').select('*').in_('id', friend_ids).execute()
+        
+        return profiles_response.data if profiles_response.data else []
     except Exception as e:
         print(f"Error getting friends: {e}")
+        import traceback
+        traceback.print_exc()
         return []
 
 def search_for_users(query):

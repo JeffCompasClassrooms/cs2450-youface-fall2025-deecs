@@ -13,7 +13,13 @@
         <form method="post" action="{{ url_for('dms.send_secure_message') }}">
           <div class="form-group">
             <label for="username">Agent Username</label>
-            <input type="text" class="form-control" name="username" placeholder="Recipient's username" required>
+            <input type="text" 
+                   class="form-control" 
+                   name="username" 
+                   id="agent-username-input"
+                   placeholder="Recipient's username" 
+                   value="{{ agent_username if agent_username else '' }}"
+                   required>
           </div>
           <div class="form-group">
             <label for="content">Message</label>
@@ -117,6 +123,7 @@
 <script>
 // Toggle conversation thread
 document.addEventListener('DOMContentLoaded', function() {
+  // Handle conversation toggling
   document.querySelectorAll('.conversation-toggle').forEach(function(header) {
     header.addEventListener('click', function(e) {
       var partnerId = this.getAttribute('data-partner-id');
@@ -134,6 +141,18 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  // Auto-focus message textarea if agent username is pre-populated
+  var agentInput = document.getElementById('agent-username-input');
+  if (agentInput && agentInput.value.trim() !== '') {
+    // Username is already filled, focus on message textarea
+    var messageTextarea = document.querySelector('textarea[name="content"]');
+    if (messageTextarea) {
+      messageTextarea.focus();
+      // Scroll to the form
+      agentInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
 });
 </script>
 

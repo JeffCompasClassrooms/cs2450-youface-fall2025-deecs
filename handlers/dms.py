@@ -12,6 +12,9 @@ def secure_channel():
     user_profile = flask.g.user
     user_id = user_profile['id']
     
+    # Get optional agent parameter for pre-populating recipient
+    agent_username = flask.request.args.get('agent', '').strip()
+    
     # Get conversations grouped by partner
     conversations = dms_db.get_conversations(user_id)
     
@@ -25,7 +28,8 @@ def secure_channel():
         subtitle=copy.subtitle,
         user=user_profile,
         username=user_profile['username'],
-        conversations=conversations
+        conversations=conversations,
+        agent_username=agent_username  # Pass to template
     )
 
 @blueprint.route("/secure/send", methods=["POST"])

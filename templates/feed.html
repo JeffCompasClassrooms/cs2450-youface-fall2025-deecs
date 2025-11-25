@@ -78,32 +78,40 @@
   <div class="col col-lg-1 feed-spacer"></div>
 
   <div class="col col-lg-3">
-    <div class="card bg-black mb-3 panel-black">
-      <div class="card-body">
-        <h3 class="card-title">Add Agent</h3>
-        <form method="post" action="{{ url_for('friends.addfriend') }}">
-          <div class="form-group mb-1">
-            <input type="text" class="form-control" name="friend_username" placeholder="username" />
-          </div>
-          <button type="submit" class="form-control btn btn-primary" name="addfriend">Submit</button>
-        </form>
-      </div>
-    </div>
-
     <div class="card bg-black panel-black">
       <div class="card-body">
-        <h3 class="card-title">My Connections</h3>
-        {% if friends %}
-          <ul>
-            {% for friend in friends %}
-              <li><a href="{{ url_for('core.view_friend', username=friend.username) }}">{{ friend.username|display_username }}</a></li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="card-text">
-            Sorry, no connections!
-          </p>
-        {% endif %}
+        <h3 class="card-title">Agent Connections</h3>
+        
+        <!-- Add Connection Form -->
+        <form method="post" action="{{ url_for('friends.addfriend') }}" class="mb-3">
+          <div class="form-group mb-2">
+            <label for="friend_username" style="font-size: 0.9rem; color: rgba(0,255,255,0.8);">Add Agent Connection</label>
+            <input type="text" class="form-control" name="friend_username" placeholder="username" />
+          </div>
+          <button type="submit" class="form-control btn btn-primary" name="addfriend">Add Connection</button>
+        </form>
+
+        <!-- My Connections List -->
+        <div style="border-top: 1px solid rgba(0,255,255,0.2); padding-top: 1rem;">
+          <h5 style="font-size: 1rem; margin-bottom: 0.75rem; color: rgba(0,255,255,0.8);">My Connections</h5>
+          {% if friends %}
+            <ul style="list-style: none; padding-left: 0;">
+              {% for friend in friends %}
+                <li style="margin-bottom: 0.5rem;">
+                  <a href="{{ url_for('dms.secure_channel', agent=friend.username) }}" 
+                     style="color: #00ffff; text-decoration: none; display: inline-block; padding: 0.25rem 0;">
+                    {{ friend.username|display_username }}
+                  </a>
+                  <span style="color: rgba(0,255,255,0.5); font-size: 0.85rem; margin-left: 0.5rem;">→ DM</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="card-text" style="color: rgba(0,255,255,0.6); font-size: 0.9rem;">
+              No connections yet...
+            </p>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
