@@ -59,7 +59,7 @@
             <h4 class="card-title">{{ claimed_item.contract.title }}</h4>
             
             <h6 class="card-subtitle mb-2">
-              Posted by: {{ claimed_item.contract.profile.username }}
+              Posted by: {{ claimed_item.contract.profile.username|display_username }}
             </h6>
             <h6 class="card-subtitle mb-2">
               Pay: ${{ "%.2f"|format(claimed_item.contract.pay_amount) }}

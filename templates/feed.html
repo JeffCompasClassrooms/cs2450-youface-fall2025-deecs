@@ -25,7 +25,7 @@
     {% for post in posts %}
     <div class="card bg-black mb-3">
       <div class="card-body">
-        <h4 class="card-title">{{ post.profile.username }}</h4>
+        <h4 class="card-title">{{ post.profile.username|display_username }}</h4>
         <h6 class="card-subtitle mb-2 text-muted">{{ post.created_at|convert_time }}</h6>
         <p class="card-text">{{ post.content }}</p>
         
@@ -49,7 +49,7 @@
             {% for comment in post.comments %}
             <div class="comment-item" style="border-left: 2px solid rgba(0,255,255,0.3); padding-left: 1rem; margin-bottom: 1rem;">
               <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                <strong style="color: #00ffff;">{{ comment.profile.username }}</strong>
+                <strong style="color: #00ffff;">{{ comment.profile.username|display_username }}</strong>
                 <small class="text-muted">{{ comment.created_at|convert_time }}</small>
               </div>
               <p style="margin: 0.5rem 0 0 0;">{{ comment.content }}</p>
@@ -96,7 +96,7 @@
         {% if friends %}
           <ul>
             {% for friend in friends %}
-              <li><a href="{{ url_for('core.view_friend', username=friend.username) }}">{{ friend.username }}</a></li>
+              <li><a href="{{ url_for('core.view_friend', username=friend.username) }}">{{ friend.username|display_username }}</a></li>
             {% endfor %}
           </ul>
         {% else %}

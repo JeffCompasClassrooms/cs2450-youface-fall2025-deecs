@@ -34,7 +34,7 @@
       <div class="card-body">
         <!-- Conversation header (clickable) -->
         <div style="cursor: pointer;" class="conversation-toggle" data-partner-id="{{ convo.partner_id }}">
-          <h4 class="card-title">{{ convo.partner.username }}</h4>
+          <h4 class="card-title">{{ convo.partner.username|display_username }}</h4>
           <h6 class="card-subtitle mb-2 text-muted">
             {{ convo.latest_message.created_at|convert_time }}
           </h6>
@@ -59,7 +59,7 @@
               <div style="max-width: 70%; text-align: right;">
                 <div style="background: rgba(0,255,255,0.15); border: 1px solid rgba(0,255,255,0.3); border-radius: 12px; padding: 0.75rem 1rem;">
                   <div style="font-size: 0.85rem; color: rgba(0,255,255,0.7); margin-bottom: 0.25rem;">
-                    {{ msg.sender.username }}
+                    {{ msg.sender.username|display_username }}
                   </div>
                   <div style="color: #00ffff;">
                     {{ msg.content }}
@@ -76,7 +76,7 @@
               <div style="max-width: 70%; text-align: left;">
                 <div style="background: rgba(0,255,255,0.08); border: 1px solid rgba(0,255,255,0.3); border-radius: 12px; padding: 0.75rem 1rem;">
                   <div style="font-size: 0.85rem; color: rgba(0,255,255,0.7); margin-bottom: 0.25rem;">
-                    {{ msg.sender.username }}
+                    {{ msg.sender.username|display_username }}
                   </div>
                   <div style="color: #00ffff;">
                     {{ msg.content }}

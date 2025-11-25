@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="row mb-4">
-  <h1>Agent Profile: {{ user.username }}</h1>
+  <h1>Agent Profile: {{ user.username|display_username }}</h1>
 </div>
 <div class="row row-left">
     <div class="col col-lg-8 align-with-heading">
-        <div class="card bg-dark">
+        <div class="card bg-dark mb-3">
             <div class="card-body">
-                <h4 class="card-title">Codename: {{ user.username }}</h4>
+                <h4 class="card-title">Codename: {{ user.username|display_username }}</h4>
                 <h6 class="card-subtitle mb-2 text-muted">Full Name: {{ user.first_name }} {{ user.last_name }}</h6>
                 <hr>
                 <h5 class="card-title">Specialties:</h5>
@@ -23,6 +23,72 @@
                 {% endif %}
             </div>
         </div>
+
+        <!-- Account Deletion Section -->
+        <div class="card bg-black mb-3" style="border: 1px solid rgba(220, 53, 69, 0.5);">
+            <div class="card-body">
+                <h4 class="card-title" style="color: #dc3545;">Danger Zone</h4>
+                <p class="card-text" style="color: rgba(220, 53, 69, 0.8);">
+                    Redact your agent profile and remove personal data. Your posts will remain in the archive as [REDACTED].
+                </p>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                    Redact Agent Profile
+                </button>
+            </div>
+        </div>
     </div>
+</div>
+
+<!-- Delete Account Confirmation Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-black" style="border: 2px solid rgba(220, 53, 69, 0.7);">
+      <form method="post" action="{{ url_for('auth.delete_account') }}">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteAccountModalLabel" style="color: #dc3545;">
+            ⚠️ Confirm Agent Profile Redaction
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert" style="background: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); color: #dc3545;">
+            <strong>WARNING:</strong> This will permanently redact:
+            <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+              <li>Your agent credentials (cannot login again)</li>
+              <li>Your personal information (name, specialties)</li>
+              <li>All comments will show as [REDACTED]</li>
+              <li>All direct messages</li>
+              <li>All contracts and assignments</li>
+              <li>All connections with other agents</li>
+            </ul>
+          </div>
+          
+          <div class="alert" style="background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); color: #00ffff; margin-top: 1rem;">
+            <strong>📝 POSTS ARE PRESERVED:</strong>
+            <p style="margin-top: 0.5rem; margin-bottom: 0;">
+              All your intel transmissions (posts) will remain in the archive for historical purposes. 
+              They will appear with the username <strong>[REDACTED]</strong> but the content stays intact.
+            </p>
+          </div>
+          
+          <p style="color: rgba(255, 255, 255, 0.8); margin-top: 1rem;">
+            <strong>You will not be able to log in again after redaction.</strong> This action is permanent.
+          </p>
+          
+          <div class="mb-3" style="margin-top: 1.5rem;">
+            <label for="password" class="form-label" style="color: #00ffff;">Enter your password to confirm:</label>
+            <input type="password" class="form-control" id="password" name="password" required 
+                   style="background: rgba(220, 53, 69, 0.05); border-color: rgba(220, 53, 69, 0.5); color: #00ffff;">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger" style="box-shadow: 0 0 0 1px rgba(220, 53, 69, 0.5), 0 0 12px rgba(220, 53, 69, 0.5);">
+            Redact Agent Profile
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}
