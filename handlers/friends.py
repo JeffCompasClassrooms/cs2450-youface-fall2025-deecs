@@ -43,3 +43,33 @@ def unfriend():
 
     flask.flash(message, category)
     return flask.redirect(flask.url_for("core.index"))
+
+@blueprint.route("/accept_request", methods=["POST"])
+@login_required
+def accept_request():
+    user_id = flask.g.user['id']
+    requester_id = flask.request.form.get("requester_id")
+
+    if not requester_id:
+        flask.flash("Invalid request.", "danger")
+        return flask.redirect(flask.url_for('core.index'))
+
+    success, message, category = users_db.accept_friend_request(user_id, requester_id)
+
+    flask.flash(message, category)
+    return flask.redirect(flask.url_for("core.index"))
+
+@blueprint.route("/decline_request", methods=["POST"])
+@login_required
+def decline_request():
+    user_id = flask.g.user['id']
+    requester_id = flask.request.form.get("requester_id")
+
+    if not requester_id:
+        flask.flash("Invalid request.", "danger")
+        return flask.redirect(flask.url_for('core.index'))
+
+    success, message, category = users_db.decline_friend_request(user_id, requester_id)
+
+    flask.flash(message, category)
+    return flask.redirect(flask.url_for("core.index"))

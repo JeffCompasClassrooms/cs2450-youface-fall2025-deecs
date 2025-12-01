@@ -18,22 +18,53 @@ def get_profile_by_username(username):
         print(f"Error getting profile by username: {e}")
         return None
 
+def update_user_tags(user_id, tags):
+    """Update the specialties/tags for a user profile"""
+    supabase = get_supabase()
+    try:
+        response = supabase.table('profiles').update({
+            'tags': tags
+        }).eq('id', user_id).execute()
+        
+        return True, "Specialties updated successfully.", "success"
+    except Exception as e:
+        print(f"Error updating user tags: {e}")
+        return False, f"Error updating specialties: {e}", "danger"
+
 def add_friend(user_id, friend_id):
     supabase = get_supabase()
     try:
-        response = supabase.table('friends').select('*').eq('user_id', user_id).eq('friend_id', friend_id).execute()
+        # Check if a request already exists (in either direction)
+        response = supabase.table('friends').select('*').or_(
+            f'and(user_id.eq.{user_id},friend_id.eq.{friend_id}),and(user_id.eq.{friend_id},friend_id.eq.{user_id})'
+        ).execute()
+        
         if response.data:
-            return False, "You are already connections.", "warning"
+            existing = response.data[0]
+            if existing['status'] == 'accepted':
+                return False, "You are already connected.", "warning"
+            elif existing['status'] == 'pending':
+                if existing['user_id'] == user_id:
+                    return False, "Friend request already sent.", "warning"
+                else:
+                    return False, "This agent has already sent you a request. Check your Friend Requests section.", "info"
+            elif existing['status'] == 'declined':
+                return False, "Previous request was declined.", "warning"
         
-        supabase.table('friends').insert([
-            {'user_id': user_id, 'friend_id': friend_id},
-            {'user_id': friend_id, 'friend_id': user_id} 
-        ]).execute()
+        # Create a single pending friend request
+        supabase.table('friends').insert({
+            'user_id': user_id,
+            'friend_id': friend_id,
+            'status': 'pending',
+            'created_by': user_id
+        }).execute()
         
-        return True, "Connection added.", "success"
+        return True, "Friend request sent.", "success"
     except Exception as e:
         print(f"Error adding friend: {e}")
-        return False, f"Error adding connection: {e}", "danger"
+        import traceback
+        traceback.print_exc()
+        return False, f"Error sending friend request: {e}", "danger"
 
 def remove_friend(user_id, friend_id):
     supabase = get_supabase()
@@ -48,14 +79,27 @@ def remove_friend(user_id, friend_id):
 def get_friends(user_id):
     supabase = get_supabase()
     try:
-        # Get friend IDs first
-        response = supabase.table('friends').select('friend_id').eq('user_id', user_id).execute()
+        # Get accepted friend IDs where user is either user_id or friend_id
+        response = supabase.table('friends').select('user_id, friend_id').eq('status', 'accepted').or_(
+            f'user_id.eq.{user_id},friend_id.eq.{user_id}'
+        ).execute()
         
         if not response.data:
             return []
         
-        # Extract friend IDs
-        friend_ids = [item['friend_id'] for item in response.data]
+        # Extract friend IDs (the ID that's NOT the current user)
+        friend_ids = []
+        for item in response.data:
+            if item['user_id'] == user_id:
+                friend_ids.append(item['friend_id'])
+            else:
+                friend_ids.append(item['user_id'])
+        
+        # Remove duplicates
+        friend_ids = list(set(friend_ids))
+        
+        if not friend_ids:
+            return []
         
         # Get profiles for those friend IDs
         profiles_response = supabase.table('profiles').select('*').in_('id', friend_ids).execute()
@@ -66,6 +110,123 @@ def get_friends(user_id):
         import traceback
         traceback.print_exc()
         return []
+
+def get_pending_friend_requests(user_id):
+    """Get all pending friend requests sent TO this user"""
+    supabase = get_supabase()
+    try:
+        # Get pending requests where user is the friend_id (recipient)
+        response = supabase.table('friends').select('user_id, created_at').eq('friend_id', user_id).eq('status', 'pending').execute()
+        
+        if not response.data:
+            return []
+        
+        # Get the sender IDs
+        sender_ids = [item['user_id'] for item in response.data]
+        
+        # Get profiles for those senders
+        profiles_response = supabase.table('profiles').select('*').in_('id', sender_ids).execute()
+        
+        # Add created_at timestamp to each profile
+        if profiles_response.data:
+            profiles_dict = {p['id']: p for p in profiles_response.data}
+            result = []
+            for item in response.data:
+                if item['user_id'] in profiles_dict:
+                    profile = profiles_dict[item['user_id']].copy()
+                    profile['request_created_at'] = item['created_at']
+                    result.append(profile)
+            return result
+        
+        return []
+    except Exception as e:
+        print(f"Error getting pending friend requests: {e}")
+        import traceback
+        traceback.print_exc()
+        return []
+
+def get_sent_friend_requests(user_id):
+    """Get all pending friend requests sent BY this user (waiting for response)"""
+    supabase = get_supabase()
+    try:
+        # Get pending requests where user is the user_id (sender)
+        response = supabase.table('friends').select('friend_id, created_at').eq('user_id', user_id).eq('status', 'pending').execute()
+        
+        if not response.data:
+            return []
+        
+        # Get the recipient IDs
+        recipient_ids = [item['friend_id'] for item in response.data]
+        
+        # Get profiles for those recipients
+        profiles_response = supabase.table('profiles').select('*').in_('id', recipient_ids).execute()
+        
+        # Add created_at timestamp to each profile
+        if profiles_response.data:
+            profiles_dict = {p['id']: p for p in profiles_response.data}
+            result = []
+            for item in response.data:
+                if item['friend_id'] in profiles_dict:
+                    profile = profiles_dict[item['friend_id']].copy()
+                    profile['request_created_at'] = item['created_at']
+                    result.append(profile)
+            return result
+        
+        return []
+    except Exception as e:
+        print(f"Error getting sent friend requests: {e}")
+        import traceback
+        traceback.print_exc()
+        return []
+
+def accept_friend_request(user_id, requester_id):
+    """Accept a friend request"""
+    supabase = get_supabase()
+    try:
+        # Update the original request to accepted
+        supabase.table('friends').update({
+            'status': 'accepted'
+        }).eq('user_id', requester_id).eq('friend_id', user_id).eq('status', 'pending').execute()
+        
+        # Check if reverse relationship already exists (from old bidirectional system)
+        existing_reverse = supabase.table('friends').select('*').eq('user_id', user_id).eq('friend_id', requester_id).execute()
+        
+        if not existing_reverse.data:
+            # Create the reverse relationship only if it doesn't exist
+            supabase.table('friends').insert({
+                'user_id': user_id,
+                'friend_id': requester_id,
+                'status': 'accepted',
+                'created_by': requester_id  # Original requester
+            }).execute()
+        else:
+            # If it exists, just make sure it's marked as accepted
+            supabase.table('friends').update({
+                'status': 'accepted'
+            }).eq('user_id', user_id).eq('friend_id', requester_id).execute()
+        
+        return True, "Friend request accepted.", "success"
+    except Exception as e:
+        print(f"Error accepting friend request: {e}")
+        import traceback
+        traceback.print_exc()
+        return False, f"Error accepting request: {e}", "danger"
+
+def decline_friend_request(user_id, requester_id):
+    """Decline a friend request"""
+    supabase = get_supabase()
+    try:
+        # Update status to declined (or could delete the row entirely)
+        supabase.table('friends').update({
+            'status': 'declined'
+        }).eq('user_id', requester_id).eq('friend_id', user_id).eq('status', 'pending').execute()
+        
+        return True, "Friend request declined.", "success"
+    except Exception as e:
+        print(f"Error declining friend request: {e}")
+        import traceback
+        traceback.print_exc()
+        return False, f"Error declining request: {e}", "danger"
 
 def search_for_users(query):
     supabase = get_supabase()

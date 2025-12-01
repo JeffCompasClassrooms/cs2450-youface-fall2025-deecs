@@ -2,9 +2,13 @@
 
 {% block content %}
 
-<div class="row login-row" style="justify-content: center; gap: 2rem;">
+<div class="row login-row" style="justify-content: center;">
 
   <div class="col-sm-6" style="max-width: 480px;">
+    
+    <!-- Centered Logo -->
+    <img src="{{ url_for('static', filename='myspylogo.jpg') }}" class="login-logo" alt="mySpy Logo">
+
     <div class="card card-body bg-black login-card">
       <form method="post" action="{{ url_for('auth.login') }}">
         <fieldset>
@@ -18,46 +22,20 @@
             <label for="password">Password</label>
             <input type="password" class="form-control" name="password" required>
           </div>
-          <div class="form-group">
+          <div class="form-group mb-0 text-center">
             <input class="btn btn-primary" type="submit" name="type" value="Login">
           </div>
         </fieldset>
       </form>
     </div>
-  </div>
 
-  <div class="col-sm-6" style="max-width: 480px;">
-    <div class="card card-body bg-black login-card">
-      <form method="post" action="{{ url_for('auth.signup') }}">
-        <fieldset>
-          <legend>New Agent Registration</legend>
-          <hr />
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" name="email" required>
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" name="password" required>
-          </div>
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" name="username" required>
-          </div>
-           <div class="form-group">
-            <label for="first_name">First Name</label>
-            <input type="text" class="form-control" name="first_name" required>
-          </div>
-           <div class="form-group">
-            <label for="last_name">Last Name</label>
-            <input type="text" class="form-control" name="last_name" required>
-          </div>
-          <div class="form-group">
-            <input class="btn btn-success" type="submit" name="type" value="Create Account">
-          </div>
-        </fieldset>
-      </form>
+    <!-- Link to Account Creation -->
+    <div class="text-center mt-3">
+      <a href="{{ url_for('auth.signup_screen') }}" style="color: #00ffff; text-decoration: none;">
+        Don't have an account? <span style="text-decoration: underline;">Create Account</span>
+      </a>
     </div>
+
   </div>
 
 </div>

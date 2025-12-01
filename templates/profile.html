@@ -1,6 +1,63 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<style>
+  /* Custom Button Styles (Matching Assignments Page) */
+
+  /* Red Button (Delete Account) */
+  .btn-custom-red {
+    background-color: transparent !important;
+    color: #fff !important; /* White text */
+    border: 1px solid #dc3545 !important;
+    transition: all 0.2s ease;
+  }
+  .btn-custom-red:hover, .btn-custom-red:focus {
+    background-color: rgba(220, 53, 69, 0.4) !important; /* Muted Red */
+    color: #fff !important;
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.4);
+  }
+
+  /* Green Button (Save) */
+  .btn-custom-green {
+    background-color: transparent !important;
+    color: #fff !important; /* White text */
+    border: 1px solid #28a745 !important; /* Bootstrap Success Green */
+    transition: all 0.2s ease;
+  }
+  .btn-custom-green:hover, .btn-custom-green:focus {
+    background-color: rgba(40, 167, 69, 0.4) !important; /* Muted Green */
+    color: #fff !important;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
+  }
+
+  /* Blue/Cyan Button (Edit) */
+  .btn-custom-blue {
+    background-color: transparent !important;
+    color: #fff !important; /* White text */
+    border: 1px solid #00ffff !important; /* Cyan to match theme */
+    transition: all 0.2s ease;
+  }
+  .btn-custom-blue:hover, .btn-custom-blue:focus {
+    background-color: rgba(0, 255, 255, 0.25) !important; /* Muted Cyan */
+    color: #fff !important;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+  }
+
+  /* Secondary/Cancel Button */
+  .btn-custom-secondary {
+    background-color: transparent !important;
+    color: #ccc !important;
+    border: 1px solid #6c757d !important;
+    transition: all 0.2s ease;
+  }
+  .btn-custom-secondary:hover, .btn-custom-secondary:focus {
+    background-color: rgba(108, 117, 125, 0.4) !important;
+    color: #fff !important;
+    border-color: #fff !important;
+  }
+</style>
+
 <div class="row mb-4">
   <h1>Agent Profile: {{ user.username|display_username }}</h1>
 </div>
@@ -11,7 +68,15 @@
                 <h4 class="card-title">Codename: {{ user.username|display_username }}</h4>
                 <h6 class="card-subtitle mb-2 text-muted">Full Name: {{ user.first_name }} {{ user.last_name }}</h6>
                 <hr>
-                <h5 class="card-title">Specialties:</h5>
+                
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="card-title mb-0">Specialties:</h5>
+                    <!-- Edit Specialties Button -->
+                    <button type="button" class="btn btn-sm btn-custom-blue" data-bs-toggle="modal" data-bs-target="#editSpecialtiesModal">
+                        Edit
+                    </button>
+                </div>
+
                 {% if user.tags %}
                     <ul>
                         {% for tag in user.tags %}
@@ -19,7 +84,7 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p class="card-text">No specialties listed.</p>
+                    <p class="card-text text-muted">No specialties listed.</p>
                 {% endif %}
             </div>
         </div>
@@ -31,12 +96,45 @@
                 <p class="card-text" style="color: rgba(220, 53, 69, 0.8);">
                     Redact your agent profile and remove personal data. Your posts will remain in the archive as [REDACTED].
                 </p>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                <button type="button" class="btn btn-custom-red" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
                     Redact Agent Profile
                 </button>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Edit Specialties Modal -->
+<div class="modal fade" id="editSpecialtiesModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-black" style="border: 1px solid #00ffff;">
+      <form method="post" action="{{ url_for('core.update_tags') }}">
+        <div class="modal-header" style="border-bottom: 1px solid rgba(0, 255, 255, 0.3);">
+          <h5 class="modal-title" style="color: #00ffff;">Edit Agent Specialties</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Select Skills:</label>
+            <div>
+              {% for tag in tags %}
+              <div class="form-check">
+                <!-- Check if tag is in user's current tags -->
+                <input class="form-check-input" type="checkbox" name="tags" id="tag-{{ tag }}" value="{{ tag }}"
+                       {% if user.tags and tag in user.tags %}checked{% endif %}>
+                <label class="form-check-label" for="tag-{{ tag }}">{{ tag }}</label>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top: 1px solid rgba(0, 255, 255, 0.3);">
+          <button type="button" class="btn btn-custom-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-custom-green">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <!-- Delete Account Confirmation Modal -->
@@ -48,7 +146,7 @@
           <h5 class="modal-title" id="deleteAccountModalLabel" style="color: #dc3545;">
             ⚠️ Confirm Agent Profile Redaction
           </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="alert" style="background: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); color: #dc3545;">
@@ -82,8 +180,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-danger" style="box-shadow: 0 0 0 1px rgba(220, 53, 69, 0.5), 0 0 12px rgba(220, 53, 69, 0.5);">
+          <button type="button" class="btn btn-custom-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-custom-red">
             Redact Agent Profile
           </button>
         </div>

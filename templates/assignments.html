@@ -1,12 +1,68 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<style>
+  /* Custom Button Styles - Transparent with colored outline & muted hover */
+
+  /* Red Button (Create Directive, Delete) */
+  .btn-custom-red {
+    background-color: transparent !important;
+    color: #fff !important; /* White text */
+    border: 1px solid #dc3545 !important;
+    transition: all 0.2s ease;
+  }
+  .btn-custom-red:hover, .btn-custom-red:focus {
+    background-color: rgba(220, 53, 69, 0.4) !important; /* Muted Red */
+    color: #fff !important;
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.4);
+  }
+
+  /* Green Button (Claim, Transmit, Save) */
+  .btn-custom-green {
+    background-color: transparent !important;
+    color: #fff !important; /* White text */
+    border: 1px solid #28a745 !important; /* Bootstrap Success Green */
+    transition: all 0.2s ease;
+  }
+  .btn-custom-green:hover, .btn-custom-green:focus {
+    background-color: rgba(40, 167, 69, 0.4) !important; /* Muted Green */
+    color: #fff !important;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
+  }
+
+  /* Blue/Cyan Button (Message, Edit) */
+  .btn-custom-blue {
+    background-color: transparent !important;
+    color: #fff !important; /* White text */
+    border: 1px solid #00ffff !important; /* Cyan to match theme */
+    transition: all 0.2s ease;
+  }
+  .btn-custom-blue:hover, .btn-custom-blue:focus {
+    background-color: rgba(0, 255, 255, 0.25) !important; /* Muted Cyan */
+    color: #fff !important;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+  }
+
+  /* Secondary/Cancel Button (White/Grey) */
+  .btn-custom-secondary {
+    background-color: transparent !important;
+    color: #ccc !important;
+    border: 1px solid #6c757d !important;
+    transition: all 0.2s ease;
+  }
+  .btn-custom-secondary:hover, .btn-custom-secondary:focus {
+    background-color: rgba(108, 117, 125, 0.4) !important;
+    color: #fff !important;
+    border-color: #fff !important;
+  }
+</style>
+
 <div class="row mb-4">
   <div class="col">
     <h1>Available Directives</h1>
-  </div>
-  <div class="col text-end align-self-center">
-    <button type="button" class="btn btn-primary transmit-btn" data-bs-toggle="modal" data-bs-target="#createContractModal">
+    <!-- Create Directive Button -->
+    <button type="button" class="btn btn-custom-red mt-2" data-bs-toggle="modal" data-bs-target="#createContractModal">
       <span class="btn-label">Create Directive</span>
     </button>
   </div>
@@ -22,24 +78,119 @@
               <h4 class="card-title mb-0">{{ contract.title }}</h4>
               
               {% if contract.user_id == user.id %}
-                <span class="badge bg-secondary">AUTHOR</span>
+                <!-- Author Controls -->
+                <div class="d-flex gap-2">
+                  <!-- Edit: Blue -->
+                  <button type="button" class="btn btn-sm btn-custom-blue" data-bs-toggle="modal" data-bs-target="#editContractModal-{{ contract.contract_id }}">
+                    Edit
+                  </button>
+                  <!-- Delete: Red Trigger -->
+                  <button type="button" class="btn btn-sm btn-custom-red" data-bs-toggle="modal" data-bs-target="#deleteContractModal-{{ contract.contract_id }}">
+                    Delete
+                  </button>
+                </div>
               {% else %}
-                <form method="post" action="{{ url_for('contracts.claim', contract_id=contract.contract_id) }}" class="mb-0">
-                  <button type="submit" class="btn btn-sm btn-success">Claim</button>
-                </form>
+                <!-- Other User Controls -->
+                <div class="d-flex gap-2">
+                  <!-- Message: Blue -->
+                  <a href="{{ url_for('dms.secure_channel', agent=contract.profile.username) }}" class="btn btn-sm btn-custom-blue">
+                    Message Handler
+                  </a>
+                  <!-- Claim: Green -->
+                  <form method="post" action="{{ url_for('contracts.claim', contract_id=contract.contract_id) }}" class="mb-0">
+                    <button type="submit" class="btn btn-sm btn-custom-green">Claim</button>
+                  </form>
+                </div>
               {% endif %}
             </div>
 
-            <h6 class="card-subtitle mb-2 mt-1">{{ "%.2f"|format(contract.pay_amount) }}</h6>
+            <!-- Removed Posted By section -->
+            <h6 class="card-subtitle mb-2 mt-1" style="color: #fff;">$ {{ "%.2f"|format(contract.pay_amount) }}</h6>
+            
             <p class="card-text">{{ contract.description }}</p>
             {% if contract.tags %}
-                <p class="card-text">
-                    <strong>Required Skills:</strong>
+                <!-- Updated Colors: Label White, Skills Grey -->
+                <p class="card-text" style="color: #888;">
+                    <strong style="color: #fff;">Required Skills:</strong>
                     {{ contract.tags|join(', ') }}
                 </p>
             {% endif %}
           </div>
         </div>
+
+        <!-- Modals for this specific contract (Edit & Delete) -->
+        {% if contract.user_id == user.id %}
+        
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editContractModal-{{ contract.contract_id }}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content bg-black" style="border: 1px solid #00ffff;">
+              <form method="post" action="{{ url_for('contracts.edit', contract_id=contract.contract_id) }}">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(0, 255, 255, 0.3);">
+                  <h5 class="modal-title" style="color: #00ffff;">Edit Directive</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" name="title" value="{{ contract.title }}" required>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" name="description" rows="3" required>{{ contract.description }}</textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Pay Amount ($)</label>
+                    <input type="number" step="0.01" class="form-control" name="pay_amount" value="{{ contract.pay_amount }}" required>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Required Skills (Tags)</label>
+                    <div>
+                      {% for tag in tags %}
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="tags" value="{{ tag }}" 
+                               {% if contract.tags and tag in contract.tags %}checked{% endif %}>
+                        <label class="form-check-label">{{ tag }}</label>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid rgba(0, 255, 255, 0.3);">
+                  <button type="button" class="btn btn-custom-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-custom-green">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteContractModal-{{ contract.contract_id }}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content bg-black" style="border: 2px solid #dc3545;">
+              <div class="modal-header" style="border-bottom: 1px solid rgba(220, 53, 69, 0.3);">
+                <h5 class="modal-title" style="color: #dc3545;">⚠️ Confirm Termination</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p style="color: #fff;">Are you sure you want to delete this directive? This action cannot be undone.</p>
+                <div class="alert alert-danger" style="background: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); color: #dc3545;">
+                  <strong>Directive:</strong> {{ contract.title }}
+                </div>
+              </div>
+              <div class="modal-footer" style="border-top: 1px solid rgba(220, 53, 69, 0.3);">
+                <button type="button" class="btn btn-custom-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="{{ url_for('contracts.delete', contract_id=contract.contract_id) }}" style="display:inline;">
+                  <button type="submit" class="btn btn-custom-red">Confirm Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% endif %}
+
         {% endfor %}
         
         {% if not unclaimed_contracts %}
@@ -56,19 +207,24 @@
         {% for claimed_item in claimed_contracts %}
         <div class="card bg-black">
           <div class="card-body">
-            <h4 class="card-title">{{ claimed_item.contract.title }}</h4>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h4 class="card-title mb-0">{{ claimed_item.contract.title }}</h4>
+              <!-- Message: Blue -->
+              <a href="{{ url_for('dms.secure_channel', agent=claimed_item.contract.profile.username) }}" class="btn btn-sm btn-custom-blue">
+                Message Handler
+              </a>
+            </div>
             
-            <h6 class="card-subtitle mb-2">
-              Posted by: {{ claimed_item.contract.profile.username|display_username }}
-            </h6>
-            <h6 class="card-subtitle mb-2">
-              Pay: ${{ "%.2f"|format(claimed_item.contract.pay_amount) }}
+            <!-- Removed Posted By section -->
+            <h6 class="card-subtitle mb-2" style="color: #fff;">
+              $ {{ "%.2f"|format(claimed_item.contract.pay_amount) }}
             </h6>
             
             <p class="card-text">{{ claimed_item.contract.description }}</p>
             {% if claimed_item.contract.tags %}
-                <p class="card-text">
-                    <strong>Required Skills:</strong>
+                <!-- Updated Colors: Label White, Skills Grey -->
+                <p class="card-text" style="color: #888;">
+                    <strong style="color: #fff;">Required Skills:</strong>
                     {{ claimed_item.contract.tags|join(', ') }}
                 </p>
             {% endif %}
@@ -82,14 +238,14 @@
     </div>
 </div>
 
-
+<!-- Create Contract Modal -->
 <div class="modal fade" id="createContractModal" tabindex="-1" aria-labelledby="createContractModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content bg-black">
+    <div class="modal-content bg-black" style="border: 1px solid #dc3545;">
       <form method="post" action="{{ url_for('contracts.create') }}">
-        <div class="modal-header">
-          <h5 class="modal-title" id="createContractModalLabel">New Directive</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-header" style="border-bottom: 1px solid rgba(220, 53, 69, 0.3);">
+          <h5 class="modal-title" id="createContractModalLabel" style="color: #dc3545;">New Directive</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3">
@@ -116,9 +272,10 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary transmit-btn">
+        <div class="modal-footer" style="border-top: 1px solid rgba(220, 53, 69, 0.3);">
+          <button type="button" class="btn btn-custom-secondary" data-bs-dismiss="modal">Cancel</button>
+          <!-- Using Custom Green Style -->
+          <button type="submit" class="btn btn-custom-green">
             <span class="btn-label">Transmit Directive</span>
           </button>
         </div>

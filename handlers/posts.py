@@ -16,9 +16,11 @@ def post():
 
     new_post = posts_db.create_post(user_id, content)
     
-    if new_post:
-        flask.flash("Intel transmitted successfully.", "success")
-    else:
+    # REMOVED SUCCESS FLASH
+    # if new_post:
+    #     flask.flash("Intel transmitted successfully.", "success")
+    
+    if not new_post:
         flask.flash("Error transmitting intel. Please try again.", "danger")
 
     return flask.redirect(flask.url_for("core.index"))
@@ -39,9 +41,11 @@ def comment_on_post(post_id):
         content=content
     )
     
-    if new_comment:
-        flask.flash("Comment added.", "success")
-    else:
+    # REMOVED SUCCESS FLASH
+    # if new_comment:
+    #     flask.flash("Comment added.", "success")
+    
+    if not new_comment:
         flask.flash("Error adding comment.", "danger")
         
     return flask.redirect(flask.url_for('core.index'))

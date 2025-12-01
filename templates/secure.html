@@ -1,6 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<style>
+  /* Custom Styles for Secure Channel */
+  
+  /* Grey Placeholders */
+  .form-control::placeholder {
+    color: #888 !important;
+    opacity: 1;
+  }
+
+  /* Green Button (Transmit) - Transparent with Green Outline */
+  .btn-custom-green {
+    background-color: transparent !important;
+    color: #fff !important; /* Force white text */
+    border: 1px solid #28a745 !important;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-custom-green:hover, 
+  .btn-custom-green:focus {
+    background-color: rgba(40, 167, 69, 0.4) !important; /* Muted Green */
+    color: #fff !important;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
+  }
+</style>
+
 <div class="row mb-4">
   <h1>Secure Channel</h1>
 </div>
@@ -13,20 +39,15 @@
         <form method="post" action="{{ url_for('dms.send_secure_message') }}">
           <div class="form-group">
             <label for="username">Agent Username</label>
-            <input type="text" 
-                   class="form-control" 
-                   name="username" 
-                   id="agent-username-input"
-                   placeholder="Recipient's username" 
-                   value="{{ agent_username if agent_username else '' }}"
-                   required>
+            <input type="text" class="form-control" name="username" placeholder="Recipient's username" value="{{ agent_username if agent_username else '' }}" required>
           </div>
           <div class="form-group">
             <label for="content">Message</label>
             <textarea class="form-control" name="content" rows="3" placeholder="> Enter message..." required></textarea>
           </div>
           <div style="text-align: right;">
-            <button type="submit" class="btn btn-primary transmit-btn" name="post-submit">
+            <!-- Updated Button Style -->
+            <button type="submit" class="btn btn-custom-green" name="post-submit">
               <span class="btn-label">Transmit</span>
             </button>
           </div>
@@ -67,7 +88,8 @@
                   <div style="font-size: 0.85rem; color: rgba(0,255,255,0.7); margin-bottom: 0.25rem;">
                     {{ msg.sender.username|display_username }}
                   </div>
-                  <div style="color: #00ffff;">
+                  <!-- Message text set to white -->
+                  <div style="color: #ffffff;">
                     {{ msg.content }}
                   </div>
                   <div style="font-size: 0.75rem; color: rgba(0,255,255,0.5); margin-top: 0.25rem;">
@@ -84,7 +106,8 @@
                   <div style="font-size: 0.85rem; color: rgba(0,255,255,0.7); margin-bottom: 0.25rem;">
                     {{ msg.sender.username|display_username }}
                   </div>
-                  <div style="color: #00ffff;">
+                  <!-- Message text set to white -->
+                  <div style="color: #ffffff;">
                     {{ msg.content }}
                   </div>
                   <div style="font-size: 0.75rem; color: rgba(0,255,255,0.5); margin-top: 0.25rem;">
@@ -104,7 +127,8 @@
               <textarea class="form-control" name="content" rows="2" placeholder="> Enter reply..." required></textarea>
             </div>
             <div style="text-align: right;">
-              <button type="submit" class="btn btn-sm btn-primary">
+              <!-- Updated Button Style -->
+              <button type="submit" class="btn btn-sm btn-custom-green">
                 <span class="btn-label">Transmit Reply</span>
               </button>
             </div>
@@ -123,7 +147,6 @@
 <script>
 // Toggle conversation thread
 document.addEventListener('DOMContentLoaded', function() {
-  // Handle conversation toggling
   document.querySelectorAll('.conversation-toggle').forEach(function(header) {
     header.addEventListener('click', function(e) {
       var partnerId = this.getAttribute('data-partner-id');
@@ -141,18 +164,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-
-  // Auto-focus message textarea if agent username is pre-populated
-  var agentInput = document.getElementById('agent-username-input');
-  if (agentInput && agentInput.value.trim() !== '') {
-    // Username is already filled, focus on message textarea
-    var messageTextarea = document.querySelector('textarea[name="content"]');
-    if (messageTextarea) {
-      messageTextarea.focus();
-      // Scroll to the form
-      agentInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }
 });
 </script>
 
